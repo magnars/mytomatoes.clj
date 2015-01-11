@@ -1,0 +1,114 @@
+html {margin: 0;}
+html, body {height: 100%;}
+#main {min-height: 100%; height: auto !important; height: 100%; margin: 0 auto -1.5em;}
+#footer, #push {height: 1.5em;}
+#export,
+#footer {text-align: center; font-size: 10px;color: #999;}
+#export a,
+#footer a {color: #99b;}
+
+#export {padding: 20px 0;}
+
+body {font-family:Verdana;background:#eee;}
+em {font-style: italic;}
+
+#header {padding:4px;}
+#header h1 {font-size:2.0em;text-align:center;padding:2px 75px 8px;background: url(../images/pomodoro.png) no-repeat left 50%;width: 230px; margin: 0 auto;}
+#header h1 div {font-size:0.5em;color: #bb9551;text-align: left;padding-left: 4px;}
+
+#error,
+#noscript,
+#welcome,
+#states {background-color:#fff;height:330px;text-align:center;border-top:2px solid #ddd;border-bottom:2px solid #ddd;}
+
+#welcome p {padding-top:15px;width:420px;margin:0 auto;text-align:justify;}
+#welcome form {text-align:left;padding:10px 20px 20px 20px;border:2px solid #ddd;width:420px;margin:20px auto;}
+#welcome #toggle_register_login {float:right;margin-top:2px;}
+#welcome h3 {font-size:1.6em;padding-bottom:5px;}
+#welcome #fields input {width:405px;padding:5px;font-size:1.4em;margin-bottom:10px;}
+#welcome input.hint {color:#999;}
+#welcome #submit {font-size:1.4em;float:right;}
+
+#welcome #session_expired {font-size:1.3em; text-align: center; color: #bb9551; padding-top: 30px;}
+
+#welcome form {position: relative;}
+#welcome .validation_error {padding:10px 5px 10px 26px;width:187px;background:url(../images/validation.png) no-repeat left 50%;font-size:10px;position:absolute;right:-186px;margin-top:-44px;*margin-top:3px;}
+#welcome .double_error {padding:22px 5px 22px 26px;width:187px;background:url(../images/validation_double.png) no-repeat left 50%;font-size:10px;position:absolute;right:-186px;margin-top:-32px;*margin-top:9px;}
+
+#noscript p,
+#error p {padding-top:80px; padding-bottom: 20px; width: 450px; margin: 0 auto; text-align: justify;}
+
+#states #working,
+#states #stop_working,
+#states #enter_description,
+#states #on_a_break,
+#states #break_over {display:none;}
+
+#states #waiting #flash_message {padding-top:40px;font-size:1.6em;padding-bottom:20px;color:#fff;}
+#states #waiting a {display:block;width:270px;padding-top:22px;height:83px;margin:0 auto;font-size:1.8em;color:#000;text-decoration:none;background:url(../images/button.png) no-repeat left top;}
+#states #waiting a:hover {background-position:left -144px;}
+
+#states #working #time_left {font-family:Tahoma;font-size:13em;text-align:center;}
+#states #working #cancel a {color:#99c;}
+
+#states #stop_working #no_time_left {font-family:Tahoma;font-size:13em;text-align:center;}
+#states #stop_working #break {font-size:1.6em;}
+
+#states #enter_description #congratulations {padding-top:80px;margin:0 auto 20px;font-size:1.4em;color:#bb9551;}
+#states #enter_description #description {margin-top:20px;font-size:1.6em;}
+#states #enter_description input {font-size:2.4em;padding:4px;}
+#states #enter_description #void {margin-top:10px;}
+
+#states #on_a_break #break_left {font-family:Tahoma;font-size:13em;text-align:center;color:#cc6;}
+#states #on_a_break #well_deserved {font-size:1.6em;}
+#states #on_a_break #longer_break {margin-top: 10px;}
+#states #on_a_break #longer_break a {color: #996;}
+#states #on_a_break .longer_break_closed {font-size: 11px;}
+#states #on_a_break .longer_break_closed span {display: none;}
+#states #on_a_break .longer_break_open {font-size: inherit;}
+#states #on_a_break .longer_break_open #toggle_longer_break {color: #000; cursor: text; text-decoration: none;}
+#states #on_a_break .longer_break_open span {display: inline;}
+
+#states #break_over #no_break_left {font-family:Tahoma;font-size:13em;text-align:center;}
+#states #break_over #back_to_work {font-size:1.6em;}
+
+#preferences_container {width:550px;margin:-2px auto 2px;position: relative;}
+#preferences {width: 550px; position: absolute; top: -28px; height: 28px; overflow: hidden; opacity: 0.2; background: #f4f4f4; -moz-border-radius: 23px 23px 0 0; -webkit-border-radius: 23px 23px 0 0;}
+#preferences:hover {opacity: 1;}
+#preferences.open {opacity: 1; top: -170px; height: 170px; background: #eee; border-bottom: 0;}
+#preferences h3 {color: #669; margin: 0; position: relative; text-align: center; height: 23px; padding-top: 5px; font-size: 15px; background: url(../images/preferences.png) no-repeat 39% 60%; cursor: pointer;}
+#preferences.open h3 {color: #000; background-color: #ddd; -moz-border-radius: 23px 23px 0 0; -webkit-border-radius: 23px 23px 0 0;}
+#preferences li {border-bottom: 1px dashed #ddd; padding: 20px 50px;}
+#preferences label {cursor: pointer;}
+#preferences input {margin-right: 5px;}
+#preferences .note {font-size: 10px; color: #999; margin: 4px 0 0 22px;}
+#preferences .note a {color: #99b;}
+#preferences .disabled label {text-decoration: line-through; color: #999;}
+#preferences .disabled .note {color: #000;}
+#preferences .disabled .note a {color: #00f;}
+
+#done {width:550px;margin:10px auto 0;}
+#done h3 {font-size:2.0em;padding:0 50px;}
+#done h3 span {font-size:11px;color:#999;}
+#done ul {margin:5px 0 15px;border-top:1px solid #ddd;}
+#done li {border-top:1px solid #fff;border-bottom:1px solid #ddd;padding:2px 50px 5px;background:#f4f4f4;}
+#done li span {color:#999;font-size:11px;padding-right:10px;}
+#done .european_clock .ameritime,
+#done .american_clock .eurotime {display: none;}
+#show_older_tomatoes {margin:0 50px;color:#99c;}
+#show_older_tomatoes:hover {color:#66c;}
+
+#audio {display: none;}
+
+#tutorial {padding-bottom: 20px;}
+#tutorial h3 {text-align:center;font-size:1.4em;margin:20px 0 5px;}
+#tutorial ul {margin:0 auto;text-align:center;*margin-left:5px;}
+#tutorial li {display:-moz-inline-stack;display:inline-block;width:110px;height:130px;vertical-align:top;font-size:11px;border:1px solid #999;background:#fff;text-align:left;zoom:1;*display:inline;*margin-right: 5px;}
+#tutorial p {padding:7px 10px;}
+#tutorial span {display:block;background:#f4f4f4 url(../images/tutorial.png) no-repeat left top;width:100px;height:65px;margin:5px 5px 0 5px;}
+#tutorial #waiting_tutorial span {background-position:0 0;}
+#tutorial #working_tutorial span {background-position:-100px 0;}
+#tutorial #stop_working_tutorial span {background-position:-200px 0;}
+#tutorial #enter_description_tutorial span {background-position:-300px 0;}
+#tutorial #on_a_break_tutorial span {background-position:-400px 0;}
+#tutorial #break_over_tutorial span {background-position:-500px 0;}
