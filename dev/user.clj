@@ -1,0 +1,15 @@
+(ns user
+  (:require [clj-time.core :as time]
+            [clojure.java.io :as io]
+            [clojure.pprint :refer [pprint pp]]
+            [clojure.repl :refer :all]
+            [clojure.set :as set]
+            [clojure.string :as str]
+            [clojure.tools.namespace.repl :refer [refresh]]
+            [clojure.tools.trace :refer [trace-ns]]
+            [mytomatoes.system]
+            [print.foo :refer :all]
+            [quick-reset.core :refer [stop reset system]]))
+
+(quick-reset.core/set-constructor 'mytomatoes.system/create-system)
+
