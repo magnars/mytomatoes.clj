@@ -1,5 +1,6 @@
 (ns mytomatoes.system
-  (:require [mytomatoes.server :as server]
+  (:require [clojure.java.io :as io]
+            [mytomatoes.server :as server]
             [mytomatoes.web :as web]
             [prone.middleware :as prone]))
 
@@ -26,9 +27,9 @@
 (defn create-system
   "Returns a new instance of the whole application."
   []
-  {:port 3001
-   :start start
-   :stop stop})
+  (merge (read-string (slurp (io/resource "config.edn")))
+         {:start start
+          :stop stop}))
 
 (defn -main [& args]
   (let [system (create-system)]
