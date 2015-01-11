@@ -33,5 +33,4 @@
 
 (defn -main [& args]
   (let [system (create-system)]
-    (start system)
-    (println "Server started on port" (:port system))))
+    (start system)))
