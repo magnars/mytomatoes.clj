@@ -14,7 +14,7 @@
         [:a {:href "http://francescocirillo.com/"}
          "Francesco Cirillo"]
         " - it's an online tomato kitchen timer and pomodoro tracker."]
-       [:form {:action "/register"}
+       [:form {:action "register"}
         [:a {:id "toggle_register_login" :href "#"}
          "already registered?"]
         [:h3 "register"]
