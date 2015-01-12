@@ -3,7 +3,7 @@
 var MT = MT || {};
 
 (function ($) {
-    MT.debug = $.url.param("debug") || $.browser.mozilla && location.host === "local.mytomatoes.com";
+    MT.debug = $.url.param("debug") || $.browser.mozilla && location.host === "local.mytomatoes.com:3001";
 
     function today() {
         return new Date().moveToMidnight();
@@ -59,7 +59,7 @@ var MT = MT || {};
         $.ajax({
             data: parameters,
             type: "POST",
-            url: url + "?ajax=json",
+            url: url,
             timeout: 20000,
             dataType: 'json',
             error: handle_error,
