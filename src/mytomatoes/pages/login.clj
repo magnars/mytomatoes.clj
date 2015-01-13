@@ -22,7 +22,7 @@
          [:input {:type "text" :id "username" :name "username"}]
          [:input {:type "password" :id "password" :name "password"}]
          [:input {:type "password" :id "password2" :name "password2"}]]
-        [:input {:type "submit" :id "submit" :value "loading.." :disabled true}]
+        [:input {:type "submit" :id "submit" :value "loading..." :disabled true}]
         [:div {:id "remember_me"}
          [:input {:type "checkbox" :id "remember" :name "remember" :checked true}]
          [:label {:for "remember"} " remember me"]]]])

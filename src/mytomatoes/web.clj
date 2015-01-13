@@ -1,5 +1,6 @@
 (ns mytomatoes.web
-  (:require [compojure.core :refer [GET]]
+  (:require [compojure.core :refer [routes GET POST]]
+            [mytomatoes.actions :as actions]
             [mytomatoes.layout :as layout]
             [mytomatoes.pages.login :as login]
             [optimus.optimizations :as optimizations]
@@ -12,7 +13,9 @@
             [ring.middleware.session]))
 
 (defn app-routes []
-  (GET "/" request (login/get-page request)))
+  (routes
+   (GET "/" request (login/get-page request))
+   (POST "/actions/register" request (actions/register request))))
 
 (defn create-app [sessions]
   (-> (app-routes)

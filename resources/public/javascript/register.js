@@ -3,7 +3,7 @@
 (function ($) {
 
     function switch_to_login_form() {
-        $("#welcome form").attr("action", "login.php");
+        $("#welcome form").attr("action", "login");
         $("#welcome h3").text("login");
         $("#welcome #password2").hide_password_field();
         $("#welcome #toggle_register_login").text("new here?").blur();
@@ -11,7 +11,7 @@
     }
 
     function switch_to_register_form() {
-        $("#welcome form").attr("action", "register.php");
+        $("#welcome form").attr("action", "register");
         $("#welcome h3").text("register");
         $("#welcome #password2").show_password_field();
         $("#welcome #toggle_register_login").text("already registered?").blur();
@@ -19,7 +19,7 @@
 
     function toggle_register_login() {
         var current = $("#welcome form").attr("action");
-        if (current === "register.php") {
+        if (current === "register") {
             switch_to_login_form();
         } else {
             switch_to_register_form();
