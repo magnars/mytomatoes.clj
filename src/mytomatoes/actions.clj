@@ -1,7 +1,7 @@
 (ns mytomatoes.actions
   (:require [clojure.string :as str]
-            [taoensso.timbre :as timbre]
-            [mytomatoes.storage :refer [account-exists?]]))
+            [mytomatoes.storage :refer [account-exists? create-account!]]
+            [taoensso.timbre :as timbre]))
 (timbre/refer-timbre)
 
 (defn result [r]
@@ -26,5 +26,6 @@
       (account-exists? db username) (result "unavailable_username")
       (not= password password2)     (result "mismatched_passwords")
       :else
-
-      (result "ok"))))
+      (let [account-id (create-account! db username password)]
+        (info "Created account" username "with id" account-id)
+        (result "ok")))))
