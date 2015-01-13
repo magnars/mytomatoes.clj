@@ -1,5 +1,5 @@
-{:db-spec {:subprotocol "mysql"
-           :subname "//dockerhost:3306/mytomatoes"
-           :user "root"
-           :password "mysecretpassword"}
+{:db {:subprotocol "mysql"
+      :subname "//dockerhost:3306/mytomatoes"
+      :user "root"
+      :password "mysecretpassword"}
  :port 3001}

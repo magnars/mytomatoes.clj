@@ -17,8 +17,13 @@
    (GET "/" request (login/get-page request))
    (POST "/actions/register" request (actions/register request))))
 
-(defn create-app [sessions]
+(defn include-db-in-request [handler db]
+  (fn [req]
+    (handler (assoc req :db db))))
+
+(defn create-app [db sessions]
   (-> (app-routes)
+      (include-db-in-request db)
       (optimus/wrap layout/get-assets
                     optimizations/none
                     strategies/serve-live-assets)

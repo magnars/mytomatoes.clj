@@ -9,7 +9,7 @@
   and start it running. Returns an updated instance of the system."
   [system]
   (let [sessions (atom {})
-        handler (prone/wrap-exceptions (web/create-app sessions))
+        handler (prone/wrap-exceptions (web/create-app (:db system) sessions))
         server (server/create-and-start handler :port (:port system))]
     (assoc system
            :sessions sessions
