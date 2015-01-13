@@ -9,7 +9,11 @@
             [clojure.tools.trace :refer [trace-ns]]
             [mytomatoes.system]
             [print.foo :refer :all]
-            [quick-reset.core :refer [stop reset system]]))
+            [quick-reset.core :refer [stop reset system]]
+            [taoensso.timbre :as timbre]))
 
+(timbre/refer-timbre)
 (quick-reset.core/set-constructor 'mytomatoes.system/create-system)
 
+(timbre/set-config! [:appenders :spit :enabled?] true)
+(timbre/set-config! [:shared-appender-config :spit-filename] "debug.log")

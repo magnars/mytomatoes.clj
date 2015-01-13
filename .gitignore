@@ -2,3 +2,4 @@ pom.xml
 target
 /.lein-repl-history
 /.nrepl-port
+/debug.log
