@@ -9,3 +9,7 @@
 
 (defn get-random-salt []
   (str (System/currentTimeMillis)))
+
+(defn password-matches? [account password]
+  (= (:hashed-password account)
+     (hash-password password (:random-salt account))))

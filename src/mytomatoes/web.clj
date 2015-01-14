@@ -15,7 +15,8 @@
 (defn app-routes []
   (routes
    (GET "/" request (login/get-page request))
-   (POST "/actions/register" request (actions/register request))))
+   (POST "/actions/register" request (actions/register request))
+   (POST "/actions/login" request (actions/login request))))
 
 (defn include-db-in-request [handler db]
   (fn [req]
