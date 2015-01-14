@@ -15,7 +15,13 @@
                         "/javascript/library.js"
                         "/javascript/ajax_service.js"]
               "login.js" ["/javascript/input_hints.js"
-                          "/javascript/register.js"]})
+                          "/javascript/register.js"]
+              "home.js" ["/javascript/countdown.js"
+                         "/javascript/animation.js"
+                         "/javascript/sound_player.js"
+                         "/javascript/preferences.js"
+                         "/javascript/index.js"
+                         "/javascript/bootstrap.js"]})
 
 (defn get-assets []
   (concat
