@@ -3,7 +3,7 @@
             [mytomatoes.actions :as actions]
             [mytomatoes.layout :as layout]
             [mytomatoes.pages.login :as login]
-            [mytomatoes.pages.homepage :as homepage]
+            [mytomatoes.pages.home :as home]
             [optimus.optimizations :as optimizations]
             [optimus.prime :as optimus]
             [optimus.strategies :as strategies]
@@ -16,7 +16,7 @@
 (defn app-routes []
   (routes
    (GET "/" request (if (:account-id (:session request))
-                      (homepage/get-page request)
+                      (home/get-page request)
                       (login/get-page request)))
    (POST "/actions/register" request (actions/register request))
    (POST "/actions/login" request (actions/login request))))

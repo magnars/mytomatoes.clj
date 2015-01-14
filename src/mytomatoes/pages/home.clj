@@ -1,4 +1,4 @@
-(ns mytomatoes.pages.homepage
+(ns mytomatoes.pages.home
   (:require [mytomatoes.layout :refer [with-layout]]
             [hiccup.core :refer [html]]))
 
