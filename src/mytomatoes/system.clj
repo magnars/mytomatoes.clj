@@ -2,12 +2,14 @@
   (:require [clojure.java.io :as io]
             [mytomatoes.server :as server]
             [mytomatoes.web :as web]
-            [prone.middleware :as prone]))
+            [prone.middleware :as prone]
+            [mytomatoes.migrations :refer [migrate!]]))
 
 (defn start
   "Performs side effects to initialize the system, acquire resources,
   and start it running. Returns an updated instance of the system."
   [system]
+  (migrate! (:db system))
   (let [sessions (atom {})
         handler (prone/wrap-exceptions (web/create-app (:db system) sessions))
         server (server/create-and-start handler :port (:port system))]
