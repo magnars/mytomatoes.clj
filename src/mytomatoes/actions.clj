@@ -29,7 +29,8 @@
       :else
       (let [account-id (create-account! db (str/trim username) password)]
         (info "Created account" username "with id" account-id)
-        (result "ok")))))
+        (-> (result "ok")
+            (assoc :session {:account-id account-id}))))))
 
 (defn login [{:keys [db params]}]
   (let [username (get params "username")
@@ -50,4 +51,5 @@
           :else
           (do
             (info "Logged in" username "with id" (:id account) "using password.")
-            (result "ok")))))))
+            (-> (result "ok")
+                (assoc :session {:account-id (:id account)}))))))))
