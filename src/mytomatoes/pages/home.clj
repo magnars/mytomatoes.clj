@@ -1,6 +1,7 @@
 (ns mytomatoes.pages.home
   (:require [mytomatoes.layout :refer [with-layout]]
-            [hiccup.core :refer [html]]))
+            [hiccup.core :refer [html]]
+            [mytomatoes.storage :refer [get-tomatoes]]))
 
 (defn- render-states []
   (html
@@ -82,12 +83,13 @@
      [:source {:src "sounds/ticking.mp3" :type "audio/mpeg;codecs=mp3"}]
      [:source {:src "sounds/ticking.wav" :type "audio/x-wav;codecs=1"}]]]))
 
-(defn get-page [request]
-  (with-layout request
-    {:body
-     (str (render-states)
-          (render-preferences)
-          (render-tutorial)
-          (render-completed-tomatoes request)
-          (render-audio))
-     :script-bundles ["home.js"]}))
+(defn get-page [{:keys [db session] :as request}]
+  (let [tomatoes (get-tomatoes db (:account-id session))]
+    (with-layout request
+      {:body
+       (str (render-states)
+            (render-preferences)
+            (render-tutorial)
+            (render-completed-tomatoes tomatoes)
+            (render-audio))
+       :script-bundles ["home.js"]})))

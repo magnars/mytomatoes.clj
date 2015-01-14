@@ -18,3 +18,6 @@
      :username (:username raw)
      :hashed-password (:hashed_password raw)
      :random-salt (:random_salt raw)}))
+
+(defn get-tomatoes [db account-id]
+  (tomatoes-by-account db account-id))
