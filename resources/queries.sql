@@ -10,7 +10,7 @@ INSERT INTO Accounts (username, hashed_password, random_salt, created_at)
 
 -- name: tomatoes-by-account
 -- Finds all tomatoes for an account
-SELECT status, description, local_start, local_end
+SELECT description, local_start, local_end
        FROM Tomatoes
        WHERE account_id = :account_id
        ORDER BY id DESC

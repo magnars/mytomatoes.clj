@@ -1,6 +1,8 @@
 (ns mytomatoes.pages.home
-  (:require [mytomatoes.layout :refer [with-layout]]
+  (:require [clj-time.format :refer [formatter unparse]]
             [hiccup.core :refer [html]]
+            [inflections.core :refer [plural]]
+            [mytomatoes.layout :refer [with-layout]]
             [mytomatoes.storage :refer [get-tomatoes]]))
 
 (defn- render-states []
@@ -63,9 +65,38 @@
      [:li {:id "on_a_break_tutorial"} [:div [:span] [:p "take a 5 minute break"]]] " "
      [:li {:id "break_over_tutorial"} [:div [:span] [:p "start a new tomato when the timer rings"]]]]]))
 
-(defn- render-completed-tomatoes [request]
+(defn pluralize [count s]
+  (str count (if (> count 1) (plural s) s)))
+
+(def eurotime (formatter "HH:mm"))
+(def ameritime (formatter "KK:mm a"))
+
+(defn- render-tomato [num i tomato]
   (html
-   [:div {:id "done"}]))
+   [:li
+    [:span {:class "eurotime"}
+     (unparse eurotime (:local-start tomato)) " - "
+     (unparse eurotime (:local-end tomato))]
+    [:span {:class "ameritime"}
+     (unparse ameritime (:local-start tomato)) " - "
+     (unparse ameritime (:local-end tomato))]
+    " "
+    (or (not-empty (:description tomato))
+        (str "tomato #" (- num i) " finished"))]))
+
+(defn- render-day [[date tomatoes]]
+  (let [num (count tomatoes)]
+    (html
+     [:h3 [:strong (str date)] " " [:span (pluralize num " finished tomato")]]
+     [:ul
+      (map-indexed (partial render-tomato num) tomatoes)])))
+
+(defn- render-completed-tomatoes [tomatoes]
+  (let [days (group-by :date tomatoes)]
+    (html
+     [:div {:id "done"}
+      [:div {:class "european_clock"}
+       (map render-day days)]])))
 
 (defn- render-audio []
   (html

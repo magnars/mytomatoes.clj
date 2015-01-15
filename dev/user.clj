@@ -8,6 +8,7 @@
             [clojure.tools.namespace.repl :refer [refresh]]
             [clojure.tools.trace :refer [trace-ns]]
             [mytomatoes.system]
+            [mytomatoes.storage :as st]
             [print.foo :refer :all]
             [quick-reset.core :refer [stop reset system]]
             [taoensso.timbre :as timbre]))

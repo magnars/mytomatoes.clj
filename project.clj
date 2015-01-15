@@ -15,7 +15,9 @@
                  [commons-lang/commons-lang "2.6"]
                  [yesql "0.4.0"]
                  [mysql/mysql-connector-java "5.1.6"]
-                 [com.taoensso/timbre "3.3.1"]]
+                 [com.taoensso/timbre "3.3.1"]
+                 [clj-time "0.9.0"]
+                 [inflections "0.9.9"]]
   :main mytomatoes.web.system
   :profiles {:dev {:dependencies [[org.clojure/tools.trace "0.7.8"]
                                   [ciderale/quick-reset "0.1.1"]
