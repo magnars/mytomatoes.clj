@@ -3,7 +3,7 @@
             [hiccup.core :refer [html]]
             [inflections.core :refer [plural]]
             [mytomatoes.layout :refer [with-layout]]
-            [mytomatoes.storage :refer [get-tomatoes]]))
+            [mytomatoes.storage :refer [get-tomatoes get-preferences]]))
 
 (defn- render-states []
   (html
@@ -115,12 +115,13 @@
      [:source {:src "sounds/ticking.wav" :type "audio/x-wav;codecs=1"}]]]))
 
 (defn get-page [{:keys [db session] :as request}]
-  (let [tomatoes (get-tomatoes db (:account-id session))]
+  (let [tomatoes (get-tomatoes db (:account-id session))
+        prefs (get-preferences db (:account-id session))]
     (with-layout request
       {:body
        (str (render-states)
             (render-preferences)
-            (render-tutorial)
+            (when-not (:hide-tutorial prefs) (render-tutorial))
             (render-completed-tomatoes tomatoes)
             (render-audio))
        :script-bundles ["home.js"]})))

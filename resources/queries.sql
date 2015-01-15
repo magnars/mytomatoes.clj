@@ -14,3 +14,9 @@ SELECT description, local_start, local_end
        FROM Tomatoes
        WHERE account_id = :account_id
        ORDER BY id DESC
+
+-- name: account-preferences
+-- Finds all preferences for an account
+SELECT name, value
+       FROM Preferences
+       WHERE account_id = :account_id

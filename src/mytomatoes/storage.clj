@@ -1,5 +1,6 @@
 (ns mytomatoes.storage
   (:require [clj-time.coerce :refer [from-date to-local-date]]
+            [clojure.string :as str]
             [mytomatoes.account :refer [get-random-salt hash-password]]
             [yesql.core :refer [defqueries]]))
 
@@ -27,3 +28,13 @@
               :date (to-local-date (:local_start raw))
               :description (:description raw)})
    (tomatoes-by-account db account-id)))
+
+(defn ->keyword [s]
+  (keyword (str/replace s "_" "-")))
+
+(defn get-preferences [db account-id]
+  (->> (account-preferences db account-id)
+       (map (fn [p] [(->keyword (:name p))
+                     (if (= "false" (:value p))
+                       false (:value p))]))
+       (into {})))
