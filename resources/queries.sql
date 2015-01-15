@@ -20,3 +20,9 @@ SELECT description, local_start, local_end
 SELECT name, value
        FROM Preferences
        WHERE account_id = :account_id
+
+-- name: set-preference!
+-- Sets an account preference by a given to name to a value
+INSERT INTO Preferences (account_id, name, value)
+       VALUES (:account_id, :name, :value)
+       ON DUPLICATE KEY UPDATE value = :value

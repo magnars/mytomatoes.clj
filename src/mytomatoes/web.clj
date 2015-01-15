@@ -1,5 +1,5 @@
 (ns mytomatoes.web
-  (:require [compojure.core :refer [routes GET POST]]
+  (:require [compojure.core :refer [routes GET POST wrap-routes]]
             [mytomatoes.actions :as actions]
             [mytomatoes.layout :as layout]
             [mytomatoes.pages.login :as login]
@@ -13,13 +13,22 @@
             [ring.middleware.params]
             [ring.middleware.session]))
 
+(defn redirect-if-not-logged-in [handler]
+  (fn [req]
+    (if (:account-id (:session req))
+      (handler req)
+      (actions/result "not_logged_in"))))
+
 (defn app-routes []
   (routes
    (GET "/" request (if (:account-id (:session request))
                       (home/get-page request)
                       (login/get-page request)))
    (POST "/actions/register" request (actions/register request))
-   (POST "/actions/login" request (actions/login request))))
+   (POST "/actions/login" request (actions/login request))
+   (wrap-routes
+    (POST "/actions/set_preference" request (actions/set-preference request))
+    redirect-if-not-logged-in)))
 
 (defn include-db-in-request [handler db]
   (fn [req]
