@@ -14,7 +14,7 @@ var MT = MT || {};
 		contact_server: function (url_stub, params) {
 			$.ajax({
 				type: "POST",
-				url: "/" + url_stub + ".php",
+				url: "/" + url_stub,
 				data: params,
 				dataType: "json"
 			});

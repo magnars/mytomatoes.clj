@@ -37,7 +37,7 @@ var MT = MT || {};
     };
 
     MT.reload_done_div = function () {
-        $("#done").load("views/completed_tomatoes.php", MT.fix_day_names);
+        $("#done").load("views/completed_tomatoes", MT.fix_day_names);
     };
     
     MT.make_sure_that_today_is_still_today = function () {
@@ -53,7 +53,7 @@ var MT = MT || {};
             } else if (MT.debug) {
                 alert("ERROR");
             } else {
-                location.href = 'error.php';
+                location.href = 'error';
             }
         };
         $.ajax({

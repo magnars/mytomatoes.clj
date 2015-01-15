@@ -100,7 +100,7 @@
             };
         };
         me.save = function () {
-            $.postJSON("/actions/complete_tomato.php", this.parameters());
+            $.postJSON("/actions/complete_tomato", this.parameters());
         };
         return me;
     }
@@ -181,7 +181,7 @@
 
     function keep_session_alive_while_working() {
         if (current_state === "#working" || current_state === "#stop_working") {
-            $.postJSON("/actions/keep_session_alive.php", {x: "y"});
+            $.postJSON("/actions/keep_session_alive", {x: "y"});
             setTimeout(keep_session_alive_while_working, 5 * 60 * 1000);
         }
     }
@@ -206,7 +206,7 @@
                 $(this).remove();
             });
         });
-        $.postJSON("/actions/set_preference.php", {name: "hide_tutorial"});
+        $.postJSON("/actions/set_preference", {name: "hide_tutorial"});
     }
 
     function next_tutorial_step() {
