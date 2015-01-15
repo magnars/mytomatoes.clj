@@ -36,7 +36,7 @@
      [:div {:id "no_break_left"} "0:00"]
      [:div {:id "back_to_work"} "back to work!"]]]))
 
-(defn- render-preferences []
+(defn- render-preferences [{:keys [play-ticking use-american-clock]}]
   (html
    [:div {:id "preferences_container"}
     [:div {:id "preferences"}
@@ -44,13 +44,13 @@
      [:ul
       [:li {:id "ticking_preference"}
        [:label
-        [:input {:type "checkbox" :name "play_ticking" :checked true}]
+        [:input {:type "checkbox" :name "play_ticking" :checked play-ticking}]
         " Play ticking sound when working on a tomato"]
        [:div {:class "note"} "Not a fan of the ticking? I recommend"
         [:a {:href "http://simplynoise.com" :target "_blank"} "simplynoise.com"] "!"]]
       [:li {:id "clock_preference"}
        [:label
-        [:input {:type "checkbox" :name "use_american_clock" :checked true}]
+        [:input {:type "checkbox" :name "use_american_clock" :checked use-american-clock}]
         " Use 12-hour clock"]]]]]))
 
 (defn- render-tutorial []
@@ -91,11 +91,13 @@
      [:ul
       (map-indexed (partial render-tomato num) tomatoes)])))
 
-(defn- render-completed-tomatoes [tomatoes]
+(defn- render-completed-tomatoes [tomatoes prefs]
   (let [days (group-by :date tomatoes)]
     (html
      [:div {:id "done"}
-      [:div {:class "european_clock"}
+      [:div {:class (if (:use-american-clock prefs)
+                      "american_clock"
+                      "european_clock")}
        (map render-day days)]])))
 
 (defn- render-audio []
@@ -120,8 +122,8 @@
     (with-layout request
       {:body
        (str (render-states)
-            (render-preferences)
+            (render-preferences prefs)
             (when-not (:hide-tutorial prefs) (render-tutorial))
-            (render-completed-tomatoes tomatoes)
+            (render-completed-tomatoes tomatoes prefs)
             (render-audio))
        :script-bundles ["home.js"]})))
