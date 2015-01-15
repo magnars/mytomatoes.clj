@@ -46,7 +46,7 @@
        [:label
         [:input {:type "checkbox" :name "play_ticking" :checked play-ticking}]
         " Play ticking sound when working on a tomato"]
-       [:div {:class "note"} "Not a fan of the ticking? I recommend"
+       [:div {:class "note"} "Not a fan of the ticking? I recommend "
         [:a {:href "http://simplynoise.com" :target "_blank"} "simplynoise.com"] "!"]]
       [:li {:id "clock_preference"}
        [:label
