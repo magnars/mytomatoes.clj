@@ -3,7 +3,8 @@
   :url "http://mytomatoes.com"
   :jvm-opts ["-Xmx1G"
              "-XX:MaxPermSize=256m"
-             "-Djava.awt.headless=true"]
+             "-Djava.awt.headless=true"
+             "-Dfile.encoding=UTF-8"]
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [clj-time "0.9.0"]
                  [ring "1.3.2" :exclusions [org.clojure/java.classpath]]
