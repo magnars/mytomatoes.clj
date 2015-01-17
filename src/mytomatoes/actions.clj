@@ -53,6 +53,12 @@
                 (assoc :session {:account-id (:id account)})
                 (cond-> remember? (remember! db (:id account))))))))))
 
+(defn logout []
+  {:session {}
+   :cookies {"mytomatoes_remember" {:value "" :path "/"}}
+   :status 302
+   :headers {"Location" "/"}})
+
 (defn set-preference [{:keys [db params session]}]
   (let [name (get params "name")
         value (get params "value" "y")

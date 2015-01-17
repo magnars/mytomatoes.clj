@@ -15,6 +15,8 @@ em {font-style: italic;}
 #header {padding:4px;}
 #header h1 {font-size:2.0em;text-align:center;padding:2px 75px 8px;background: url(../images/pomodoro.png) no-repeat left 50%;width: 230px; margin: 0 auto;}
 #header h1 div {font-size:0.5em;color: #bb9551;text-align: left;padding-left: 4px;}
+#logout {padding: 4px; position: absolute; }
+#logout input {border: none; background: none; color: #99b; text-decoration: underline; cursor: pointer;}
 
 #error,
 #noscript,

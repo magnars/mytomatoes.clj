@@ -39,6 +39,9 @@
    [:body
     [:div {:id "main"}
      [:div {:id "header"}
+      (when (:account-id (:session request))
+        [:form {:id "logout" :method "POST", :action "/actions/logout"}
+         [:input {:type "submit" :value "log out"}]])
       [:h1 "mytomatoes.com"
        [:div " simple pomodoro tracking"]]]
 

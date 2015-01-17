@@ -23,7 +23,9 @@
    (POST "/actions/register" request (actions/register request))
    (POST "/actions/login" request (actions/login request))
    (wrap-routes
-    (POST "/actions/set_preference" request (actions/set-preference request))
+    (routes
+     (POST "/actions/set_preference" request (actions/set-preference request))
+     (POST "/actions/logout" [] (actions/logout)))
     redirect-if-not-logged-in)))
 
 (defn include-db-in-request [handler db]
