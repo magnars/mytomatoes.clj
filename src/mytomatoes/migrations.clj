@@ -5,16 +5,20 @@
 
 (defqueries "migrations.sql")
 
-(def latest 7)
+(defmacro migration [db version num f]
+  `(when (> ~num ~version)
+     (info ~(str "Running migration " num ": " f))
+     (~f ~db)))
+
+(def latest 8)
 
 (defn migrate! [db]
   (let [version (-> db get-version first :version)]
-    (when (> 6 version)
-      (info "Running migration 6: add-account-id-index-to-tomatoes!")
-      (add-account-id-index-to-tomatoes! db))
-    (when (> 7 version)
-      (info "Running migration 7: add-username-index-to-accounts!")
-      (add-username-index-to-accounts! db))
+
+    (migration db version 6 drop-event-log!)
+    (migration db version 7 add-account-id-index-to-tomatoes!)
+    (migration db version 8 add-username-index-to-accounts!)
+
     (when (> latest version)
       (info "Updated system to newest version:" latest)
       (update-version! db latest))))
