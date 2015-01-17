@@ -1,0 +1,8 @@
+docker run --name mytomatoes-mysql -e MYSQL_ROOT_PASSWORD=mysecretpassword -p 3306:3306 -d magnars/mysql
+docker run -it --link mytomatoes-mysql:mysql -v `pwd`/mytomatoes.sql:/tmp/import.sql --rm mysql bash
+mysql -h"$MYSQL_PORT_3306_TCP_ADDR" -P"$MYSQL_PORT_3306_TCP_PORT" -uroot -p"$MYSQL_ENV_MYSQL_ROOT_PASSWORD"
+create database mytomatoes;
+mysql -h"$MYSQL_PORT_3306_TCP_ADDR" -P"$MYSQL_PORT_3306_TCP_PORT" -uroot -p"$MYSQL_ENV_MYSQL_ROOT_PASSWORD" mytomatoes < /tmp/import.sql
+mysql -h"$MYSQL_PORT_3306_TCP_ADDR" -P"$MYSQL_PORT_3306_TCP_PORT" -uroot -p"$MYSQL_ENV_MYSQL_ROOT_PASSWORD" mytomatoes
+UPDATE Tomatoes SET description = CONVERT(CAST(CONVERT(description USING latin1) AS binary) USING utf8), local_start = local_start;
+UPDATE Accounts SET username = CONVERT(CAST(CONVERT(username USING latin1) AS binary) USING utf8), updated_at = updated_at;
