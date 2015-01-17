@@ -97,11 +97,10 @@
                   (sort-by :date)
                   (reverse))]
     (html
-     [:div {:id "done"}
-      [:div {:class (if (:use-american-clock prefs)
-                      "american_clock"
-                      "european_clock")}
-       (map render-day days)]])))
+     [:div {:class (if (:use-american-clock prefs)
+                     "american_clock"
+                     "european_clock")}
+      (map render-day days)])))
 
 (defn- render-audio []
   (html
@@ -127,6 +126,11 @@
        (str (render-states)
             (render-preferences prefs)
             (when-not (:hide-tutorial prefs) (render-tutorial))
-            (render-completed-tomatoes tomatoes prefs)
+            "<div id=done>" (render-completed-tomatoes tomatoes prefs) "</div>"
             (render-audio))
        :script-bundles ["home.js"]})))
+
+(defn completed-tomatoes-fragment [{:keys [db session]}]
+  (let [tomatoes (get-tomatoes db (:account-id session))
+        prefs (get-preferences db (:account-id session))]
+    (render-completed-tomatoes tomatoes prefs)))

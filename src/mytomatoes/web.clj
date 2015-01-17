@@ -27,7 +27,8 @@
      (POST "/actions/set_preference" request (actions/set-preference request))
      (POST "/actions/logout" [] (actions/logout))
      (POST "/actions/keep_session_alive" [] (actions/keep-session-alive))
-     (POST "/actions/complete_tomato" request (actions/complete-tomato request)))
+     (POST "/actions/complete_tomato" request (actions/complete-tomato request))
+     (GET "/views/completed_tomatoes" request (home/completed-tomatoes-fragment request)))
     redirect-if-not-logged-in)))
 
 (defn include-db-in-request [handler db]
