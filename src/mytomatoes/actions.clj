@@ -1,14 +1,11 @@
 (ns mytomatoes.actions
   (:require [clojure.string :as str]
+            [mytomatoes.account :refer [password-matches?]]
+            [mytomatoes.login :refer [remember!]]
             [mytomatoes.storage :as s]
-            [taoensso.timbre :as timbre]
-            [mytomatoes.account :refer [password-matches?]]))
+            [mytomatoes.util :refer [result]]
+            [taoensso.timbre :as timbre]))
 (timbre/refer-timbre)
-
-(defn result [r]
-  {:status 200
-   :body (str "{\"result\": \"" r "\"}")
-   :headers {"Content-Type" "application/json"}})
 
 (defn blank? [s]
   (or (not s)
@@ -19,7 +16,7 @@
   (let [username (get params "username")
         password (get params "password")
         password2 (get params "password2")
-        remember (get params "remember")]
+        remember? (get params "remember")]
     (cond
       (blank? username)             (result "missing_username")
       (= username "username")       (result "missing_username")
@@ -30,12 +27,13 @@
       (let [account-id (s/create-account! db (str/trim username) password)]
         (info "Created account" username "with id" account-id)
         (-> (result "ok")
-            (assoc :session {:account-id account-id}))))))
+            (assoc :session {:account-id account-id})
+            (cond-> remember? (remember! db account-id)))))))
 
 (defn login [{:keys [db params]}]
   (let [username (get params "username")
         password (get params "password")
-        remember (get params "remember")]
+        remember? (get params "remember")]
     (cond
       (blank? username) (result "missing_username")
       (= username "username") (result "missing_username")
@@ -52,7 +50,8 @@
           (do
             (info "Logged in" username "with id" (:id account) "using password.")
             (-> (result "ok")
-                (assoc :session {:account-id (:id account)}))))))))
+                (assoc :session {:account-id (:id account)})
+                (cond-> remember? (remember! db (:id account))))))))))
 
 (defn set-preference [{:keys [db params session]}]
   (let [name (get params "name")

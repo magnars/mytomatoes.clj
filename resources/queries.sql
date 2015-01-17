@@ -26,3 +26,13 @@ SELECT name, value
 INSERT INTO Preferences (account_id, name, value)
        VALUES (:account_id, :name, :value)
        ON DUPLICATE KEY UPDATE value = :value
+
+-- name: account-by-remember-code
+SELECT account_id FROM RememberCodes WHERE code = :code
+
+-- name: remove-remember-code!
+DELETE FROM RememberCodes WHERE code = :code
+
+-- name: add-remember-code!
+INSERT INTO RememberCodes (account_id, code)
+       VALUES (:account_id, :code)

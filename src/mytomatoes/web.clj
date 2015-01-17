@@ -2,8 +2,9 @@
   (:require [compojure.core :refer [routes GET POST wrap-routes]]
             [mytomatoes.actions :as actions]
             [mytomatoes.layout :as layout]
-            [mytomatoes.pages.login :as login]
+            [mytomatoes.login :refer [redirect-if-not-logged-in wrap-remember-code]]
             [mytomatoes.pages.home :as home]
+            [mytomatoes.pages.login :as login]
             [optimus.optimizations :as optimizations]
             [optimus.prime :as optimus]
             [optimus.strategies :as strategies]
@@ -11,13 +12,8 @@
             [ring.middleware.cookies]
             [ring.middleware.not-modified]
             [ring.middleware.params]
-            [ring.middleware.session]))
-
-(defn redirect-if-not-logged-in [handler]
-  (fn [req]
-    (if (:account-id (:session req))
-      (handler req)
-      (actions/result "not_logged_in"))))
+            [ring.middleware.session]
+            [taoensso.timbre :refer [info]]))
 
 (defn app-routes []
   (routes
@@ -36,13 +32,13 @@
 
 (defn create-app [db sessions]
   (-> (app-routes)
+      (wrap-remember-code)
       (include-db-in-request db)
+      (ring.middleware.params/wrap-params)
+      (ring.middleware.session/wrap-session
+       {:store (ring.middleware.session.memory/memory-store sessions)})
       (optimus/wrap layout/get-assets
                     optimizations/none
                     strategies/serve-live-assets)
       (ring.middleware.content-type/wrap-content-type)
-      (ring.middleware.not-modified/wrap-not-modified)
-      (ring.middleware.params/wrap-params)
-      (ring.middleware.cookies/wrap-cookies)
-      (ring.middleware.session/wrap-session
-       {:store (ring.middleware.session.memory/memory-store sessions)})))
+      (ring.middleware.not-modified/wrap-not-modified)))

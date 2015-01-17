@@ -38,3 +38,6 @@
                      (if (= "false" (:value p))
                        false (:value p))]))
        (into {})))
+
+(defn get-account-id-by-remember-code [db code]
+  (:account_id (first (account-by-remember-code db code))))
