@@ -53,6 +53,9 @@
                 (assoc :session {:account-id (:id account)})
                 (cond-> remember? (remember! db (:id account))))))))))
 
+(defn keep-session-alive []
+  (result "ok"))
+
 (defn logout []
   {:session {}
    :cookies {"mytomatoes_remember" {:value "" :path "/"}}

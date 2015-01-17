@@ -25,7 +25,8 @@
    (wrap-routes
     (routes
      (POST "/actions/set_preference" request (actions/set-preference request))
-     (POST "/actions/logout" [] (actions/logout)))
+     (POST "/actions/logout" [] (actions/logout))
+     (POST "/actions/keep_session_alive" [] (actions/keep-session-alive)))
     redirect-if-not-logged-in)))
 
 (defn include-db-in-request [handler db]
