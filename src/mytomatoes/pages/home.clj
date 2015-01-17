@@ -92,7 +92,10 @@
       (map-indexed (partial render-tomato num) tomatoes)])))
 
 (defn- render-completed-tomatoes [tomatoes prefs]
-  (let [days (group-by :date tomatoes)]
+  (let [days (->> tomatoes
+                  (group-by :date)
+                  (sort-by :date)
+                  (reverse))]
     (html
      [:div {:id "done"}
       [:div {:class (if (:use-american-clock prefs)

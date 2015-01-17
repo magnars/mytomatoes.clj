@@ -68,3 +68,11 @@
         account-id (:account-id session)]
     (s/set-preference! db account-id name value)
     (result "ok")))
+
+(defn complete-tomato [{:keys [db params session]}]
+  (let [account-id (:account-id session)
+        start-time (get params "start_time")
+        end-time (get params "end_time")
+        description (get params "description")]
+    (s/insert-complete-tomato! db account-id description start-time end-time)
+    (result "ok")))

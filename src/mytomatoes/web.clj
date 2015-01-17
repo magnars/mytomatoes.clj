@@ -26,7 +26,8 @@
     (routes
      (POST "/actions/set_preference" request (actions/set-preference request))
      (POST "/actions/logout" [] (actions/logout))
-     (POST "/actions/keep_session_alive" [] (actions/keep-session-alive)))
+     (POST "/actions/keep_session_alive" [] (actions/keep-session-alive))
+     (POST "/actions/complete_tomato" request (actions/complete-tomato request)))
     redirect-if-not-logged-in)))
 
 (defn include-db-in-request [handler db]

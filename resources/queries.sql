@@ -36,3 +36,8 @@ DELETE FROM RememberCodes WHERE code = :code
 -- name: add-remember-code!
 INSERT INTO RememberCodes (account_id, code)
        VALUES (:account_id, :code)
+
+-- name: insert-complete-tomato!
+INSERT INTO Tomatoes
+       (account_id, status, description, local_start, local_end, created_at)
+       VALUES (:account_id, 'completed', :description, :local_start, :local_end, CURRENT_TIMESTAMP)
