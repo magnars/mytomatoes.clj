@@ -1,5 +1,4 @@
-/*global jQuery
-*/
+/*global jQuery */
 (function ($) {
     var add_hint_to = {};
 
@@ -54,5 +53,5 @@
             add_hint_to[this.type](this, hint);
         });
     };
-    
+
 })(jQuery);

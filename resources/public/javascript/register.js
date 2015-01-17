@@ -1,5 +1,4 @@
-/*global jQuery, location
-*/
+/*global jQuery, location */
 (function ($) {
 
     function switch_to_login_form() {

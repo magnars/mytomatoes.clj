@@ -1,11 +1,11 @@
 /*global jQuery, setTimeout, document */
 (function ($) {
     $.fn.countdown = function (total_seconds, callback) {
-        var that = this, 
-            countdown_active = true,
-            original_title = document.title,
-            seconds_left = total_seconds,
-            start_time;
+        var that = this;
+        var countdown_active = true;
+        var original_title = document.title;
+        var seconds_left = total_seconds;
+        var start_time;
 
         function now() {
             return new Date().getTime();
@@ -14,7 +14,7 @@
         function calculate_seconds_left() {
             return Math.round((start_time - now()) / 1000) + total_seconds;
         }
-        
+
         function minutes_left() {
             return Math.floor((seconds_left + 6) / 60);
         }
@@ -52,8 +52,8 @@
         function count_down() {
             if (! countdown_active) {
                 if (original_title) {
-					document.title = original_title;
-				}
+                    document.title = original_title;
+                }
                 return;
             }
             seconds_left = calculate_seconds_left();
@@ -65,19 +65,19 @@
                 callback();
             }
         }
-        
+
         if ($.cancel_countdown) {
             $.cancel_countdown();
         }
         $.cancel_countdown = function () {
             countdown_active = false;
             document.title = original_title;
-			original_title = false;
+            original_title = false;
         };
 
         start_time = now();
         update_display();
         setTimeout(count_down, 1000);
     };
-    
+
 })(jQuery);
