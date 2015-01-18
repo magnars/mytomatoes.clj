@@ -34,7 +34,7 @@
   (page/html5
    [:head
     [:meta {:charset "utf-8"}]
-    [:title "Adventur Delux"]
+    [:title "mytomatoes.com"]
     (optimus.hiccup/link-to-css-bundles request ["styles.css"])]
    [:body
     [:div {:id "main"}

@@ -1,8 +1,8 @@
 (ns mytomatoes.system
+  (:gen-class :main true)
   (:require [clojure.java.io :as io]
             [mytomatoes.server :as server]
             [mytomatoes.web :as web]
-            [prone.middleware :as prone]
             [mytomatoes.migrations :refer [migrate!]]))
 
 (defn start
@@ -11,7 +11,7 @@
   [system]
   (migrate! (:db system))
   (let [sessions (atom {})
-        handler (prone/wrap-exceptions (web/create-app (:db system) sessions))
+        handler (web/create-app (:db system) sessions)
         server (server/create-and-start handler :port (:port system))]
     (assoc system
            :sessions sessions
@@ -29,7 +29,7 @@
 (defn create-system
   "Returns a new instance of the whole application."
   []
-  (merge (read-string (slurp (io/resource "config.edn")))
+  (merge (read-string (slurp (io/resource "mytomatoes-config.edn")))
          {:start start
           :stop stop}))
 
