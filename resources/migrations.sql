@@ -12,3 +12,12 @@ CREATE INDEX accounts_username_index ON Accounts (username)
 
 -- name: drop-event-log!
 DROP TABLE EventLog;
+
+-- name: drop-tomatoes-updated-at-column!
+ALTER TABLE Tomatoes DROP COLUMN updated_at;
+
+-- name: delete-tomatoes-with-invalid-start-dates!
+DELETE FROM Tomatoes WHERE local_start = :date
+
+-- name: delete-tomatoes-with-invalid-end-dates!
+DELETE FROM Tomatoes WHERE local_end = :date
