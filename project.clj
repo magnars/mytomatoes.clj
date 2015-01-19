@@ -18,7 +18,8 @@
                  [mysql/mysql-connector-java "5.1.6"]
                  [com.taoensso/timbre "3.3.1"]
                  [clj-time "0.9.0"]
-                 [inflections "0.9.9"]]
+                 [inflections "0.9.9"]
+                 [org.clojure/tools.nrepl "0.2.7"]]
   :main mytomatoes.system
   :profiles {:dev {:dependencies [[org.clojure/tools.trace "0.7.8"]
                                   [ciderale/quick-reset "0.1.1"]

@@ -3,7 +3,8 @@
   (:require [clojure.java.io :as io]
             [mytomatoes.server :as server]
             [mytomatoes.web :as web]
-            [mytomatoes.migrations :refer [migrate!]]))
+            [mytomatoes.migrations :refer [migrate!]]
+            [clojure.tools.nrepl.server :as nrepl]))
 
 (defn start
   "Performs side effects to initialize the system, acquire resources,
@@ -35,4 +36,6 @@
 
 (defn -main [& args]
   (let [system (create-system)]
-    (start system)))
+    (start system)
+    (let [repl (nrepl/start-server :port (:repl-port system 0) :bind "127.0.0.1")]
+      (println "Repl started at" (:port repl)))))
