@@ -28,44 +28,51 @@
    (assets/load-bundles "public" bundles)
    (assets/load-assets "public" ["/favicon.ico"
                                  "/mp3player.swf"
+                                 "/theme/images/error.gif"
                                  #"/sounds/.+\.(mp3|ogg|wav)"])))
 
 (defn with-layout [request page]
-  (page/html5
-   [:head
-    [:meta {:charset "utf-8"}]
-    [:title "mytomatoes.com"]
-    (optimus.hiccup/link-to-css-bundles request ["styles.css"])]
-   [:body
-    [:div {:id "main"}
-     [:div {:id "header"}
-      (when (:account-id (:session request))
-        [:form {:id "logout" :method "POST", :action "/actions/logout"}
-         [:input {:type "submit" :value "log out"}]])
-      [:h1 "mytomatoes.com"
-       [:div " simple pomodoro tracking"]]]
+  {:headers {"Content-Type" "text/html; charset=utf-8"}
+   :status (:status page 200)
+   :body (page/html5
+          [:head
+           [:meta {:charset "utf-8"}]
+           [:title "mytomatoes.com"]
+           (optimus.hiccup/link-to-css-bundles request ["styles.css"])]
+          [:body
+           [:div {:id "main"}
+            [:div {:id "header"}
+             (when (:account-id (:session request))
+               [:form {:id "logout" :method "POST", :action "/actions/logout"}
+                [:input {:type "submit" :value "log out"}]])
+             [:h1 "mytomatoes.com"
+              [:div " simple pomodoro tracking"]]]
 
-     [:noscript
-      [:style {:type "text/css"} "#states, #done, #welcome {display: none;}"]
-      [:div {:id "noscript"}
-       [:p
-        "mytomatoes.com is a tool for use with the "
-        [:a {:href "http://www.pomodorotechnique.com/"} "pomodoro technique"]
-        " by "
-        [:a {:href "http://francescocirillo.com/"} "Francesco Cirillo"]
-        ". "
-        [:em "It doesn't work without Javascript."]
-        " Sorry."]]]
+            [:noscript
+             [:style {:type "text/css"} "#states, #done, #welcome {display: none;}"]
+             [:div {:id "noscript"}
+              [:p
+               "mytomatoes.com is a tool for use with the "
+               [:a {:href "http://www.pomodorotechnique.com/"} "pomodoro technique"]
+               " by "
+               [:a {:href "http://francescocirillo.com/"} "Francesco Cirillo"]
+               ". "
+               [:em "It doesn't work without Javascript."]
+               " Sorry."]]]
 
-     (:body page)
+            (:body page)
 
-     [:div {:id "push"}]]
-    [:div {:id "footer"}
-     [:a {:target "_blank" :href "http://www.pomodorotechnique.com/"}
-      "read about the pomodoro technique"]
-     " - and twitter your feedback to "
-     [:a {:target "_blank" :href "http://twitter.com/mytomatoes"}
-      "@mytomatoes"]
-     " :-)"]]
-   (optimus.hiccup/link-to-js-bundles request (into ["lib.js"] (:script-bundles page)))
-   #_[:script (slurp (io/resource "public/ga.js"))]))
+            [:div {:id "push"}]]
+           [:div {:id "footer"}
+            [:a {:target "_blank" :href "http://www.pomodorotechnique.com/"}
+             "read about the pomodoro technique"]
+            (if (= 500 (:status page))
+              " - and twitter your rage to "
+              " - and twitter your feedback to ")
+            [:a {:target "_blank" :href "http://twitter.com/mytomatoes"}
+             "@mytomatoes"]
+            (if (= 500 (:status page))
+              " &gt;&lt;"
+              " :-)")]]
+          (optimus.hiccup/link-to-js-bundles request (into ["lib.js"] (:script-bundles page)))
+          #_[:script (slurp (io/resource "public/ga.js"))])})

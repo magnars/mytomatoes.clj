@@ -50,8 +50,6 @@ var MT = MT || {};
         var handle_error = function (err) {
             if (error_callback && error_callback(err)) {
                 // handled by callback, do nothing
-            } else if (MT.debug) {
-                alert("ERROR");
             } else {
                 location.href = 'error';
             }
