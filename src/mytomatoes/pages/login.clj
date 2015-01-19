@@ -7,13 +7,15 @@
     {:body
      (html
       [:div {:id "welcome"}
-       [:p "mytomatoes.com helps you with the "
-        [:a {:href "http://www.pomodorotechnique.com/"}
-         "pomodoro technique"]
-        " by "
-        [:a {:href "http://francescocirillo.com/"}
-         "Francesco Cirillo"]
-        " - it's an online tomato kitchen timer and pomodoro tracker."]
+       (if (get-in request [:params "session"])
+         [:p {:id "session_expired"} "sorry, your old session is lost to the ages"]
+         [:p "mytomatoes.com helps you with the "
+          [:a {:href "http://www.pomodorotechnique.com/"}
+           "pomodoro technique"]
+          " by "
+          [:a {:href "http://francescocirillo.com/"}
+           "Francesco Cirillo"]
+          " - it's an online tomato kitchen timer and pomodoro tracker."])
        [:form {:action "register"}
         [:a {:id "toggle_register_login" :href "#"}
          "already registered?"]
