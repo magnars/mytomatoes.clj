@@ -94,7 +94,7 @@
 (defn- render-completed-tomatoes [tomatoes prefs]
   (let [days (->> tomatoes
                   (group-by :date)
-                  (sort-by :date)
+                  (sort-by first)
                   (reverse))]
     (html
      [:div {:class (if (:use-american-clock prefs)
