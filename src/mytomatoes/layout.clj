@@ -2,7 +2,9 @@
   (:require [clojure.java.io :as io]
             [hiccup.page :as page]
             [optimus.assets :as assets]
-            [optimus.hiccup]))
+            [optimus.hiccup]
+            [hiccup.core :refer [html]]
+            [mytomatoes.storage :refer [get-preferences]]))
 
 (def bundles {"styles.css" ["/theme/css/reset.css"
                             "/theme/css/master.css"]
@@ -31,6 +33,20 @@
                                  "/theme/images/error.gif"
                                  #"/sounds/.+\.(mp3|ogg|wav)"])))
 
+(def banner
+  {:id "we-are-back"
+   :contents (html [:p "mytomatoes is finally back! Thanks to all you wonderful
+                        people who stepped up when we asked for help funding the
+                        server. Please, do not hesitate to report any strange
+                        behavior to "
+                    [:a {:target "_blank" :href "http://twitter.com/mytomatoes"}
+                     "@mytomatoes"]])})
+
+(defn hide-banner [request]
+  (when-let [account-id (:account-id (:session request))]
+    ((keyword (str "hide-banner-" (:id banner)))
+     (get-preferences (:db request) account-id))))
+
 (defn with-layout [request page]
   {:headers {"Content-Type" "text/html; charset=utf-8"}
    :status (:status page 200)
@@ -47,6 +63,14 @@
                 [:input {:type "submit" :value "log out"}]])
              [:h1 "mytomatoes.com"
               [:div " simple pomodoro tracking"]]]
+
+            (when (and banner (not (hide-banner request)))
+              [:div {:id "banner"}
+               (when (:account-id (:session request))
+                 [:a {:id "hide_banner" :href "#" :data-id (:id banner)}
+                  "hide"
+                  [:span " this banner"]])
+               (:contents banner)])
 
             [:noscript
              [:style {:type "text/css"} "#states, #done, #welcome {display: none;}"]

@@ -7,12 +7,20 @@ html, body {height: 100%;}
 #export a,
 #footer a {color: #99b;}
 
+#banner { background: #ffd995; border-bottom:2px solid #bb9551; border-top:2px solid #bb9551; font-size: 12px; padding: 10px; margin-top: -2px; position: relative;}
+#banner p {width: 420px; margin: 0 auto;}
+#banner a {color:#997330;}
+#hide_banner {position: absolute; right: 20px; top: 24px;}
+@media (max-width: 800px) {
+    #hide_banner span {display: none;}
+}
+
 #export {padding: 20px 0;}
 
 body {font-family:Verdana;background:#eee;}
 em {font-style: italic;}
 
-#header {padding:4px;}
+#header {padding:4px; border-bottom:2px solid #ddd;}
 #header h1 {font-size:2.0em;text-align:center;padding:2px 75px 8px;background: url(../images/pomodoro.png) no-repeat left 50%;width: 230px; margin: 0 auto;}
 #header h1 div {font-size:0.5em;color: #bb9551;text-align: left;padding-left: 4px;}
 #logout {padding: 4px; position: absolute; }
@@ -21,7 +29,7 @@ em {font-style: italic;}
 #error,
 #noscript,
 #welcome,
-#states {background-color:#fff;height:330px;text-align:center;border-top:2px solid #ddd;border-bottom:2px solid #ddd;}
+#states {background-color:#fff;height:330px;text-align:center;border-bottom:2px solid #ddd;}
 
 #welcome p {padding-top:15px;width:420px;margin:0 auto;text-align:justify;}
 #welcome form {text-align:left;padding:10px 20px 20px 20px;border:2px solid #ddd;width:420px;margin:20px auto;}

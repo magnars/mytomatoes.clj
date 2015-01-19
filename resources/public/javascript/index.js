@@ -327,6 +327,11 @@
         if (!sound_player.supports_ticking) {
             disable_ticking_preference();
         }
+
+        $("#hide_banner").click(function () {
+            $.postJSON("/actions/set_preference", {name: "hide_banner_" + $(this).attr("data-id")});
+            $("#banner").remove();
+        });
     };
 
 })(jQuery);
