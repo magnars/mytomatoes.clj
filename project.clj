@@ -20,7 +20,8 @@
                  [clj-time "0.9.0"]
                  [inflections "0.9.9"]
                  [clojure-csv "2.0.1"]
-                 [org.clojure/tools.nrepl "0.2.7"]]
+                 [org.clojure/tools.nrepl "0.2.7"]
+                 [com.postspectacular/rotor "0.1.0"]]
   :main mytomatoes.system
   :profiles {:dev {:dependencies [[org.clojure/tools.trace "0.7.8"]
                                   [ciderale/quick-reset "0.1.1"]

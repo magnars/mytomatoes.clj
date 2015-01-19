@@ -4,7 +4,9 @@
             [mytomatoes.server :as server]
             [mytomatoes.web :as web]
             [mytomatoes.migrations :refer [migrate!]]
-            [clojure.tools.nrepl.server :as nrepl]))
+            [clojure.tools.nrepl.server :as nrepl]
+            [taoensso.timbre :as timbre :refer [info]]
+            [com.postspectacular.rotor :as rotor]))
 
 (defn start
   "Performs side effects to initialize the system, acquire resources,
@@ -37,5 +39,17 @@
 (defn -main [& args]
   (let [system (create-system)]
     (start system)
+
+    (when (:rotor-log-file system)
+      (timbre/set-config! [:appenders :rotor]
+                          {:min-level :info
+                           :enabled? true
+                           :async? false                    ; should be always false for rotor
+                           :max-message-per-msecs nil
+                           :fn rotor/append})
+      (timbre/set-config! [:shared-appender-config :rotor]
+                          {:path (:rotor-log-file system) :max-size (* 512 1024) :backlog 10})
+      (info "Rotor log file at" (:rotor-log-file system)))
+
     (let [repl (nrepl/start-server :port (:repl-port system 0) :bind "127.0.0.1")]
-      (println "Repl started at" (:port repl)))))
+      (info "Repl started at" (:port repl)))))
