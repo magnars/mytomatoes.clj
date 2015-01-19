@@ -15,7 +15,8 @@
             [ring.middleware.params]
             [ring.middleware.session]
             [taoensso.timbre :refer [info error]]
-            [ring.util.response :as res]))
+            [ring.util.response :as res]
+            [mytomatoes.csv :as csv]))
 
 (defn app-routes []
   (routes
@@ -31,7 +32,8 @@
      (POST "/actions/logout" [] (actions/logout))
      (POST "/actions/keep_session_alive" [] (actions/keep-session-alive))
      (POST "/actions/complete_tomato" request (actions/complete-tomato request))
-     (GET "/views/completed_tomatoes" request (home/completed-tomatoes-fragment request)))
+     (GET "/views/completed_tomatoes" request (home/completed-tomatoes-fragment request))
+     (GET "/tomatoes.csv" request (csv/render-tomatoes request)))
     redirect-if-not-logged-in)))
 
 (defn include-stuff-in-request [handler db env]

@@ -19,6 +19,7 @@
                  [com.taoensso/timbre "3.3.1"]
                  [clj-time "0.9.0"]
                  [inflections "0.9.9"]
+                 [clojure-csv "2.0.1"]
                  [org.clojure/tools.nrepl "0.2.7"]]
   :main mytomatoes.system
   :profiles {:dev {:dependencies [[org.clojure/tools.trace "0.7.8"]

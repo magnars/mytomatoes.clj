@@ -102,6 +102,9 @@
                      "european_clock")}
       (map render-day days)])))
 
+(def csv-link
+  "<div id='export'><a href='/tomatoes.csv'>Export tomatoes as csv</a></div>")
+
 (defn- render-audio []
   (html
    [:div {:id "audio"}
@@ -126,7 +129,10 @@
        (str (render-states)
             (render-preferences prefs)
             (when-not (:hide-tutorial prefs) (render-tutorial))
-            "<div id=done>" (render-completed-tomatoes tomatoes prefs) "</div>"
+            "<div id=done>"
+            (render-completed-tomatoes tomatoes prefs)
+            (when (< 5 (count tomatoes)) csv-link)
+            "</div>"
             (render-audio))
        :script-bundles ["home.js"]})))
 
