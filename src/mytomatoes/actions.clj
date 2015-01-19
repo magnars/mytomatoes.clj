@@ -67,6 +67,7 @@
         value (get params "value" "y")
         account-id (:account-id session)]
     (s/set-preference! db account-id name value)
+    (info "Set preference" name "=" value "for" account-id)
     (result "ok")))
 
 (defn complete-tomato [{:keys [db params session]}]
@@ -75,4 +76,5 @@
         end-time (get params "end_time")
         description (get params "description")]
     (s/insert-complete-tomato! db account-id description start-time end-time)
+    (info "Complete tomato for" account-id ":" description)
     (result "ok")))
