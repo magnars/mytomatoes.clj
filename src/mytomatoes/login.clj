@@ -4,6 +4,7 @@
             [mytomatoes.storage :refer [get-account-id-by-remember-code]]
             [mytomatoes.storage :refer [remove-remember-code!]]
             [mytomatoes.storage :refer [add-remember-code!]]
+            [taoensso.timbre :refer [info]]
             [taoensso.timbre :refer [info]])
   (:import [org.apache.commons.codec.binary Hex]))
 
@@ -35,9 +36,11 @@
     (if-not (:account-id (:session req))
       (if-let [remember-code (get-in req [:cookies "mytomatoes_remember" :value])]
         (if-let [account-id (log-in-with-remember-code (:db req) remember-code)]
-          (-> (handler (assoc-in req [:session :account-id] account-id))
-              (assoc-in [:session :account-id] account-id)
-              (remember! (:db req) account-id))
+          (do
+            (info "Logged in account with id" account-id "using remember code.")
+            (-> (handler (assoc-in req [:session :account-id] account-id))
+                (assoc-in [:session :account-id] account-id)
+                (remember! (:db req) account-id)))
           (handler req))
         (handler req))
       (handler req))))
