@@ -149,7 +149,7 @@
 
     function add_todays_list_if_first() {
         if (! $("#done #today").exists()) {
-            $("<h3 id='today'><strong>today</strong> <span></span></h3><ul></ul>").prependTo("#done").data("date", MT.today());
+            $("<h3 id='today'><strong>today</strong> <span></span></h3><ul></ul>").prependTo("#done > div").data("date", MT.today());
         }
     }
 
