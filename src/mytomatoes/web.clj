@@ -54,8 +54,8 @@
        {:store (ring.middleware.session.memory/memory-store sessions)})
       (wrap-exceptions)
       (optimus/wrap layout/get-assets
-                    optimizations/none
-                    strategies/serve-live-assets)
+                    (if (= :prod env) optimizations/all optimizations/none)
+                    (if (= :prod env) strategies/serve-frozen-assets strategies/serve-live-assets))
       (ring.middleware.content-type/wrap-content-type)
       (ring.middleware.not-modified/wrap-not-modified)
       (wrap-exceptions)))
