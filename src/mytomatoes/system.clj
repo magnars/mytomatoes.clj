@@ -11,7 +11,7 @@
   [system]
   (migrate! (:db system))
   (let [sessions (atom {})
-        handler (web/create-app (:db system) sessions)
+        handler (web/create-app (:db system) sessions (:env system))
         server (server/create-and-start handler :port (:port system))]
     (assoc system
            :sessions sessions

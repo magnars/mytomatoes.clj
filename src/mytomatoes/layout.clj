@@ -75,4 +75,5 @@
               " &gt;&lt;"
               " :-)")]]
           (optimus.hiccup/link-to-js-bundles request (into ["lib.js"] (:script-bundles page)))
-          #_[:script (slurp (io/resource "public/ga.js"))])})
+          (when (= :prod (:env request))
+            [:script (slurp (io/resource "public/ga.js"))]))})

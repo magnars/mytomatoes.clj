@@ -34,9 +34,9 @@
      (GET "/views/completed_tomatoes" request (home/completed-tomatoes-fragment request)))
     redirect-if-not-logged-in)))
 
-(defn include-db-in-request [handler db]
+(defn include-stuff-in-request [handler db env]
   (fn [req]
-    (handler (assoc req :db db))))
+    (handler (assoc req :db db :env env))))
 
 (defn wrap-exceptions [handler]
   (fn [req]
@@ -45,10 +45,10 @@
            (error e)
            (error/get-page req)))))
 
-(defn create-app [db sessions]
+(defn create-app [db sessions env]
   (-> (app-routes)
       (wrap-remember-code)
-      (include-db-in-request db)
+      (include-stuff-in-request db env)
       (ring.middleware.params/wrap-params)
       (ring.middleware.session/wrap-session
        {:store (ring.middleware.session.memory/memory-store sessions)})
