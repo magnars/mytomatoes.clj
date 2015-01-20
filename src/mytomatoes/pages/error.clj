@@ -11,7 +11,7 @@
          [:a {:href "http://twitter.com/mytomatoes" :target "_blank"}
           "@mytomatoes"]
          ", if that makes you feel better. Or you can "
-         [:a {:href "/" :target "_blank"}
+         [:a {:href "/"}
           "try again from the beginning"] "."]))
 
 (defn get-page [request]
