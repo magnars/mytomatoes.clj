@@ -2,12 +2,11 @@
   (:require [clojure.set :as set]
             [clojure.string :as str]
             [mytomatoes.account :refer [password-matches?]]
-            [mytomatoes.login :refer [remember!]]
+            [mytomatoes.login :refer [remember! generate-auth-token]]
             [mytomatoes.storage :as s]
             [mytomatoes.util :refer [result]]
             [mytomatoes.word-stats :as ws]
-            [taoensso.timbre :as timbre]
-            [mytomatoes.login :refer [generate-auth-token]]))
+            [taoensso.timbre :as timbre]))
 (timbre/refer-timbre)
 
 (defn blank? [s]
@@ -97,7 +96,10 @@
       (blank? word3) (result "missing_word3")
       (blank? word4) (result "missing_word4")
       (blank? word5) (result "missing_word5")
-      (< (count proposed-words) 5) (result "duplicate_words")
+      (> 5 (count proposed-words)) (result "duplicate_words")
+      (> 5 (count (set/difference proposed-words ws/common-words))) (do
+                                                                      (warn "Attempt at using common words in recovery, " username ":" (set/intersection proposed-words ws/common-words))
+                                                                      (result "too_common_words"))
       :else
       (let [account (s/get-account db (str/trim username))]
         (if (nil? account)

@@ -51,6 +51,7 @@ var MT = this.MT || {};
         case "missing_word4": return $("#word4").show_validation_error("we need all five words for the test").focus();
         case "missing_word5": return $("#word5").show_validation_error("we need all five words for the test").focus();
         case "duplicate_words": alert("We need five different words to make this work."); return true;
+        case "too_common_words": alert("Some of the words you used are too common."); return true;
         case "not_enough_matches": alert("I'm sorry, but it doesn't look\nlike you've used all of these\nwords in your tomatoes."); return true;
         case "no_matches":
             alert("From what I can tell, you haven't used\nany of these words in your tomatoes.\n\nAre you sure this is the right username?");
