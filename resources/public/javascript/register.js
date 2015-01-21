@@ -70,7 +70,7 @@
             return true;
         case "wrong_password":
             if (wrong_password_before) {
-                $("#password").show_validation_error("that's not right either - <a href='/recovery'>need help?</a>").focus().select();
+                $("#password").show_validation_error("that's not right either - <a href='/recovery?username=" + $("#username").val() + "'>need help?</a>").focus().select();
             } else {
                 wrong_password_before = true;
                 $("#password").show_validation_error("sorry, that's not the right password").focus().select();

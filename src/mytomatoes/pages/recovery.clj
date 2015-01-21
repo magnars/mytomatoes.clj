@@ -13,6 +13,8 @@
        (into {})))
 
 (defn get-page [request]
+  (let [proposed-username (get-in request [:params "username"] "")
+        username (if (= proposed-username "username") "" proposed-username)]
   (with-layout request
     {:body
      (html
@@ -28,7 +30,7 @@
        [:form {:id "the-form"}
         [:div {:id "fields"}
          [:div {:class "mas"} [:label.strong {:for "username"} "your username:"]]
-         [:input {:type "text" :id "username" :name "username" :value (get-in request [:params "username"] "")}]
+         [:input {:type "text" :id "username" :name "username" :value username}]
          [:div {:class "mas"} [:label.strong {:for "word1"} "five words:"]]
          [:input {:type "text" :id "word1" :name "word1" :class "word"}]
          [:input {:type "text" :id "word2" :name "word2" :class "word"}]
@@ -39,7 +41,7 @@
       [:script
        "var MT = {};"
        "MT.commonWords = " (generate-string map-of-common-words) ";"])
-     :script-bundles ["recovery.js"]}))
+     :script-bundles ["recovery.js"]})))
 
 (defn get-change-password-page [request]
   (if-let [code (get-in request [:params "code"])]
