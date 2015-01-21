@@ -95,4 +95,18 @@ var MT = MT || {};
         return Date.parseExact(this.toString("yyyy-MM-dd"), "yyyy-MM-dd");
     };
 
+    $.fn.show_validation_error = function (text) {
+        if ($(this).next().is(".validation_error")) {
+            $(this).next().html(text);
+            return this;
+        }
+        $("<div class='validation_error'>" + text + "</div>").insertAfter(this).hide().fadeIn(500);
+        $(this).one("keydown", function () {
+            $(this).next().filter(".validation_error").fadeOut(1000, function () {
+                $(this).remove();
+            });
+        });
+        return this;
+    };
+
 })(jQuery);

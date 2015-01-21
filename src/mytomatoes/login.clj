@@ -5,14 +5,27 @@
             [mytomatoes.storage :refer [remove-remember-code!]]
             [mytomatoes.storage :refer [add-remember-code!]]
             [taoensso.timbre :refer [info]]
-            [taoensso.timbre :refer [info]])
+            [ring.util.response :refer [redirect]])
   (:import [org.apache.commons.codec.binary Hex]))
+
+(defn json-request? [req]
+  (re-find #"application/json" (get-in req [:headers "accept"])))
 
 (defn redirect-if-not-logged-in [handler]
   (fn [req]
     (if (:account-id (:session req))
       (handler req)
-      (result "not_logged_in"))))
+      (if (json-request? req)
+        (result "not_logged_in")
+        (redirect "/?session=expired")))))
+
+(defn redirect-if-logged-in [handler]
+  (fn [req]
+    (if (:account-id (:session req))
+      (if (json-request? req)
+        (result "already_logged_in")
+        (redirect "/"))
+      (handler req))))
 
 (defn generate-auth-token
   []

@@ -1,10 +1,13 @@
 (ns mytomatoes.actions
-  (:require [clojure.string :as str]
+  (:require [clojure.set :as set]
+            [clojure.string :as str]
             [mytomatoes.account :refer [password-matches?]]
             [mytomatoes.login :refer [remember!]]
             [mytomatoes.storage :as s]
             [mytomatoes.util :refer [result]]
-            [taoensso.timbre :as timbre]))
+            [mytomatoes.word-stats :as ws]
+            [taoensso.timbre :as timbre]
+            [mytomatoes.login :refer [generate-auth-token]]))
 (timbre/refer-timbre)
 
 (defn blank? [s]
@@ -78,3 +81,61 @@
     (s/insert-complete-tomato! db account-id description start-time end-time)
     (info "Complete tomato for" account-id ":" description)
     (result "ok")))
+
+(defn check-my-words [{:keys [db params]}]
+  (let [username (get params "username")
+        word1 (get params "word1")
+        word2 (get params "word2")
+        word3 (get params "word3")
+        word4 (get params "word4")
+        word5 (get params "word5")
+        proposed-words (into #{} [word1 word2 word3 word4 word5])]
+    (cond
+      (blank? username) (result "missing_username")
+      (blank? word1) (result "missing_word1")
+      (blank? word2) (result "missing_word2")
+      (blank? word3) (result "missing_word3")
+      (blank? word4) (result "missing_word4")
+      (blank? word5) (result "missing_word5")
+      (< (count proposed-words) 5) (result "duplicate_words")
+      :else
+      (let [account (s/get-account db (str/trim username))]
+        (if (nil? account)
+          (result "unknown_username")
+          (let [actual-words (ws/words-for-account db (:id account))
+                matches (count (set/intersection
+                                actual-words
+                                proposed-words))]
+            (cond
+              (= 5 matches) (let [code (generate-auth-token)]
+                              (info "Successfull password word check for" username "with id" (:id account) ":" proposed-words)
+                              (s/add-remember-code! db (:id account) code)
+                              (result "ok" {:url (str "/change-password?code=" code)}))
+              (= 0 matches) (do
+                              (info "Failed password word check with NO matching words for" username "with id" (:id account) ":" proposed-words)
+                              (result "no_matches"))
+              :else (do
+                      (info "Failed password word check with" matches "out of 5 matches for" username "with id" (:id account) ", wrong:" (set/difference proposed-words actual-words))
+                      (result "not_enough_matches")))))))))
+
+(defn change-password [{:keys [db params]}]
+  (let [code (get params "code")
+        password (get params "password")
+        password2 (get params "password2")]
+    (cond
+      (blank? code) (do (info "Attempt to change password without a code.")
+                        (result "wrong_code"))
+      (blank? password) (result "missing_password")
+      (not= password password2) (result "mismatched_passwords")
+      :else
+      (if-let [account-id (s/get-account-id-by-remember-code db code)]
+        (do
+          (s/change-password! db account-id password)
+          (s/remove-remember-code! db code)
+          (info "Password changed for account" account-id)
+          (-> (result "ok")
+              (assoc :session {:account-id account-id})
+              (remember! db account-id)))
+        (do
+          (info "Attempt to change password with invalid code: " code)
+          (result "wrong_code"))))))

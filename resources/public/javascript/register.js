@@ -35,20 +35,6 @@
         location.href = location.href.replace('?session=expired', '');
     }
 
-    $.fn.show_validation_error = function (text) {
-        if ($(this).next().is(".validation_error")) {
-            $(this).next().text(text);
-            return this;
-        }
-        $("<div class='validation_error'>" + text + "</div>").insertAfter(this).hide().fadeIn(500);
-        $(this).one("keydown", function () {
-            $(this).next().filter(".validation_error").fadeOut(1000, function () {
-                $(this).remove();
-            });
-        });
-        return this;
-    };
-
     function show_mismatched_password_validation() {
         var error = $("<div class='double_error'>these aren't equal (they should be)</div>").insertAfter("#password").hide().fadeIn(500);
         if ($.browser.opera) {
@@ -69,6 +55,8 @@
         return $("#welcome h3").text();
     }
 
+    var wrong_password_before = false;
+
     function error_when_logging_in(json) {
         switch (json.result) {
         case "unavailable_username":
@@ -81,7 +69,12 @@
             $("#username").show_validation_error("you need a username to " + current_action()).focus();
             return true;
         case "wrong_password":
-            $("#password").show_validation_error("sorry, that's not the right password").focus().select();
+            if (wrong_password_before) {
+                $("#password").show_validation_error("that's not right either - <a href='/recovery'>need help?</a>").focus().select();
+            } else {
+                wrong_password_before = true;
+                $("#password").show_validation_error("sorry, that's not the right password").focus().select();
+            }
             return true;
         case "missing_password":
             $("#password").show_validation_error("you need a password to " + current_action()).prev().trigger("focus").next().focus();

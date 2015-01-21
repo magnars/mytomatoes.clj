@@ -8,6 +8,12 @@ SELECT id, username, hashed_password, random_salt
 INSERT INTO Accounts (username, hashed_password, random_salt, created_at)
        VALUES (:username, :hashed_password, :random_salt, CURRENT_TIMESTAMP)
 
+-- name: update-password!
+UPDATE Accounts SET
+       hashed_password = :hashed_password,
+       random_salt = :random_salt
+       WHERE id = :account_id
+
 -- name: tomatoes-by-account
 -- Finds all tomatoes for an account
 SELECT description, local_start, local_end

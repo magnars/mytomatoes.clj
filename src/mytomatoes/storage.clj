@@ -14,6 +14,10 @@
     (-> (insert-account<! db username (hash-password password salt) salt)
         :generated_key)))
 
+(defn change-password! [db account-id password]
+  (let [salt (get-random-salt)]
+    (update-password! db (hash-password password salt) salt account-id)))
+
 (defn get-account [db username]
   (when-let [raw (first (account-by-username db username))]
     {:id (:id raw)

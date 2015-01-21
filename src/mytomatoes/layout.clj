@@ -23,7 +23,10 @@
                          "/javascript/sound_player.js"
                          "/javascript/preferences.js"
                          "/javascript/index.js"
-                         "/javascript/bootstrap.js"]})
+                         "/javascript/bootstrap.js"]
+              "recovery.js" ["/javascript/recovery.js"]
+              "change-password.js" ["/javascript/input_hints.js"
+                                    "/javascript/change-password.js"]})
 
 (defn get-assets []
   (concat

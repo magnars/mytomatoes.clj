@@ -2,10 +2,11 @@
   (:require [compojure.core :refer [routes GET POST wrap-routes]]
             [mytomatoes.actions :as actions]
             [mytomatoes.layout :as layout]
-            [mytomatoes.login :refer [redirect-if-not-logged-in wrap-remember-code]]
+            [mytomatoes.login :refer [redirect-if-not-logged-in wrap-remember-code redirect-if-logged-in]]
             [mytomatoes.pages.home :as home]
             [mytomatoes.pages.login :as login]
             [mytomatoes.pages.error :as error]
+            [mytomatoes.pages.recovery :as recovery]
             [optimus.optimizations :as optimizations]
             [optimus.prime :as optimus]
             [optimus.strategies :as strategies]
@@ -24,8 +25,15 @@
                       (home/get-page request)
                       (login/get-page request)))
    (GET "/error" request (error/get-page request))
-   (POST "/actions/register" request (actions/register request))
-   (POST "/actions/login" request (actions/login request))
+   (wrap-routes
+    (routes
+     (GET "/recovery" request (recovery/get-page request))
+     (GET "/change-password" request (recovery/get-change-password-page request))
+     (POST "/actions/check-my-words" request (actions/check-my-words request))
+     (POST "/actions/register" request (actions/register request))
+     (POST "/actions/login" request (actions/login request))
+     (POST "/actions/change-password" request (actions/change-password request)))
+    redirect-if-logged-in)
    (wrap-routes
     (routes
      (POST "/actions/set_preference" request (actions/set-preference request))
