@@ -15,33 +15,33 @@
 (defn get-page [request]
   (let [proposed-username (get-in request [:params "username"] "")
         username (if (= proposed-username "username") "" proposed-username)]
-  (with-layout request
-    {:body
-     (html
-      [:div {:id "welcome" :class "recovery"}
-       (if (= "invalid" (get-in request [:params "code"]))
-         [:p "Whoa, that code to change your password was wrong, for some
+    (with-layout request
+      {:body
+       (html
+        [:div {:id "welcome" :class "recovery"}
+         (if (= "invalid" (get-in request [:params "code"]))
+           [:p "Whoa, that code to change your password was wrong, for some
               reason. Damn. Let's try again. Type in five words that you've used
               in your tomatoes. If they all match, we'll call that good enough.
               Okay?"]
-         [:p "Lost your password? Let's see if we can fix that. Type in five
+           [:p "Lost your password? Let's see if we can fix that. Type in five
               words that you've used in your tomatoes. If they all match, we'll
               call that good enough. Okay?"])
-       [:form {:id "the-form"}
-        [:div {:id "fields"}
-         [:div {:class "mas"} [:label.strong {:for "username"} "your username:"]]
-         [:input {:type "text" :id "username" :name "username" :value username}]
-         [:div {:class "mas"} [:label.strong {:for "word1"} "five words:"]]
-         [:input {:type "text" :id "word1" :name "word1" :class "word"}]
-         [:input {:type "text" :id "word2" :name "word2" :class "word"}]
-         [:input {:type "text" :id "word3" :name "word3" :class "word"}]
-         [:input {:type "text" :id "word4" :name "word4" :class "word"}]
-         [:input {:type "text" :id "word5" :name "word5" :class "word"}]]
-        [:input {:type "submit" :id "submit" :value "loading..." :disabled true}]]]
-      [:script
-       "var MT = {};"
-       "MT.commonWords = " (generate-string map-of-common-words) ";"])
-     :script-bundles ["recovery.js"]})))
+         [:form {:id "the-form"}
+          [:div {:id "fields"}
+           [:div {:class "mas"} [:label.strong {:for "username"} "your username:"]]
+           [:input {:type "text" :id "username" :name "username" :value username}]
+           [:div {:class "mas"} [:label.strong {:for "word1"} "five words:"]]
+           [:input {:type "text" :id "word1" :name "word1" :class "word"}]
+           [:input {:type "text" :id "word2" :name "word2" :class "word"}]
+           [:input {:type "text" :id "word3" :name "word3" :class "word"}]
+           [:input {:type "text" :id "word4" :name "word4" :class "word"}]
+           [:input {:type "text" :id "word5" :name "word5" :class "word"}]]
+          [:input {:type "submit" :id "submit" :value "loading..." :disabled true}]]]
+        [:script
+         "var MT = {};"
+         "MT.commonWords = " (generate-string map-of-common-words) ";"])
+       :script-bundles ["recovery.js"]})))
 
 (defn get-change-password-page [request]
   (if-let [code (get-in request [:params "code"])]
