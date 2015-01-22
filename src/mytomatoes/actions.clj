@@ -88,7 +88,7 @@
         word3 (get params "word3")
         word4 (get params "word4")
         word5 (get params "word5")
-        proposed-words (into #{} [word1 word2 word3 word4 word5])]
+        proposed-words (into #{} (map str/lower-case [word1 word2 word3 word4 word5]))]
     (cond
       (blank? username) (result "missing_username")
       (blank? word1) (result "missing_word1")
