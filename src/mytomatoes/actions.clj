@@ -87,17 +87,15 @@
         word2 (get params "word2")
         word3 (get params "word3")
         word4 (get params "word4")
-        word5 (get params "word5")
-        proposed-words (into #{} (map str/lower-case [word1 word2 word3 word4 word5]))]
+        proposed-words (into #{} (map str/lower-case [word1 word2 word3 word4]))]
     (cond
       (blank? username) (result "missing_username")
       (blank? word1) (result "missing_word1")
       (blank? word2) (result "missing_word2")
       (blank? word3) (result "missing_word3")
       (blank? word4) (result "missing_word4")
-      (blank? word5) (result "missing_word5")
-      (> 5 (count proposed-words)) (result "duplicate_words")
-      (> 5 (count (set/difference proposed-words ws/common-words))) (do
+      (> 4 (count proposed-words)) (result "duplicate_words")
+      (> 4 (count (set/difference proposed-words ws/common-words))) (do
                                                                       (warn "Attempt at using common words in recovery, " username ":" (set/intersection proposed-words ws/common-words))
                                                                       (result "too_common_words"))
       :else
@@ -109,7 +107,7 @@
                                 actual-words
                                 proposed-words))]
             (cond
-              (= 5 matches) (let [code (generate-auth-token)]
+              (= 4 matches) (let [code (generate-auth-token)]
                               (info "Successfull password word check for" username "with id" (:id account) ":" proposed-words)
                               (s/add-remember-code! db (:id account) code)
                               (result "ok" {:url (str "/change-password?code=" code)}))
@@ -117,7 +115,7 @@
                               (info "Failed password word check with NO matching words for" username "with id" (:id account) ":" proposed-words)
                               (result "no_matches"))
               :else (do
-                      (info "Failed password word check with" matches "out of 5 matches for" username "with id" (:id account) ", wrong:" (set/difference proposed-words actual-words))
+                      (info "Failed password word check with" matches "out of 4 matches for" username "with id" (:id account) ", wrong:" (set/difference proposed-words actual-words))
                       (result "not_enough_matches")))))))))
 
 (defn change-password [{:keys [db params]}]

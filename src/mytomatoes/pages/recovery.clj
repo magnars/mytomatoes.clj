@@ -21,22 +21,26 @@
         [:div {:id "welcome" :class "recovery"}
          (if (= "invalid" (get-in request [:params "code"]))
            [:p "Whoa, that code to change your password was wrong, for some
-              reason. Damn. Let's try again. Type in five words that you've used
+              reason. Damn. Let's try again. Type in four words that you've used
               in your tomatoes. If they all match, we'll call that good enough.
               Okay?"]
-           [:p "Lost your password? Let's see if we can fix that. Type in five
+           (list
+            [:p "Lost your password? Let's see if we can fix that. Type in four
               words that you've used in your tomatoes. If they all match, we'll
-              call that good enough. Okay?"])
+              call that good enough. Okay?"]
+            [:p "Think back. What have you been doing? What sort of description
+              did you write for your tomatoes? Did you use any special names?
+              Abbreviations? Words specific to your field? Type them in one at a
+              time."]))
          [:form {:id "the-form"}
           [:div {:id "fields"}
            [:div {:class "mas"} [:label.strong {:for "username"} "your username:"]]
            [:input {:type "text" :id "username" :name "username" :value username}]
-           [:div {:class "mas"} [:label.strong {:for "word1"} "five words:"]]
+           [:div {:class "mas"} [:label.strong {:for "word1"} "four words:"]]
            [:input {:type "text" :id "word1" :name "word1" :class "word"}]
            [:input {:type "text" :id "word2" :name "word2" :class "word"}]
            [:input {:type "text" :id "word3" :name "word3" :class "word"}]
-           [:input {:type "text" :id "word4" :name "word4" :class "word"}]
-           [:input {:type "text" :id "word5" :name "word5" :class "word"}]]
+           [:input {:type "text" :id "word4" :name "word4" :class "word"}]]
           [:input {:type "submit" :id "submit" :value "loading..." :disabled true}]]]
         [:script
          "var MT = {};"
