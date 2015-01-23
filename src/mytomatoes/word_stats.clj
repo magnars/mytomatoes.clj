@@ -4,13 +4,17 @@
 
 (defonce ^:private word-stats (atom {}))
 
-(defn words-for-account [db id]
-  (->> (st/get-tomatoes db id)
-       (map :description)
+(defn split-into-words [ss]
+  (->> ss
        (mapcat #(str/split % #"\W+"))
        (map str/lower-case)
        (remove #(< (count %) 2))
        (set)))
+
+(defn words-for-account [db id]
+  (->> (st/get-tomatoes db id)
+       (map :description)
+       (split-into-words)))
 
 (defn- track-word [stats word account-id]
   (update-in stats [word] (fn [s] (if s (conj s account-id) #{account-id}))))

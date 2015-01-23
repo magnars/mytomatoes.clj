@@ -102,15 +102,16 @@
       (let [account (s/get-account db (str/trim username))]
         (if (nil? account)
           (result "unknown_username")
-          (let [actual-words (ws/words-for-account db (:id account))
+          (let [proposed-words (ws/split-into-words proposed-words) ;; in case they think "its-hyphenated" is one word, but we think it's two
+                actual-words (ws/words-for-account db (:id account))
                 matches (count (set/intersection
                                 actual-words
                                 proposed-words))]
             (cond
-              (= 4 matches) (let [code (generate-auth-token)]
-                              (info "Successfull password word check for" username "with id" (:id account) ":" proposed-words)
-                              (s/add-remember-code! db (:id account) code)
-                              (result "ok" {:url (str "/change-password?code=" code)}))
+              (<= 4 matches) (let [code (generate-auth-token)]
+                               (info "Successfull password word check for" username "with id" (:id account) ":" proposed-words)
+                               (s/add-remember-code! db (:id account) code)
+                               (result "ok" {:url (str "/change-password?code=" code)}))
               (= 0 matches) (do
                               (info "Failed password word check with NO matching words for" username "with id" (:id account) ":" proposed-words)
                               (result "no_matches"))
