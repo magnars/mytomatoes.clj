@@ -83,10 +83,10 @@
 
 (defn check-my-words [{:keys [db params]}]
   (let [username (get params "username")
-        word1 (get params "word1")
-        word2 (get params "word2")
-        word3 (get params "word3")
-        word4 (get params "word4")
+        word1 ^String (get params "word1")
+        word2 ^String (get params "word2")
+        word3 ^String (get params "word3")
+        word4 ^String (get params "word4")
         proposed-words (into #{} (map str/lower-case [word1 word2 word3 word4]))]
     (cond
       (blank? username) (result "missing_username")
@@ -104,19 +104,27 @@
           (result "unknown_username")
           (let [proposed-words (ws/split-into-words proposed-words) ;; in case they think "its-hyphenated" is one word, but we think it's two
                 actual-words (ws/words-for-account db (:id account))
-                matches (count (set/intersection
-                                actual-words
-                                proposed-words))]
+                num-matches (count (set/intersection
+                                    actual-words
+                                    proposed-words))
+                num-proposed (count proposed-words)]
             (cond
-              (<= 4 matches) (let [code (generate-auth-token)]
-                               (info "Successfull password word check for" username "with id" (:id account) ":" proposed-words)
-                               (s/add-remember-code! db (:id account) code)
-                               (result "ok" {:url (str "/change-password?code=" code)}))
-              (= 0 matches) (do
-                              (info "Failed password word check with NO matching words for" username "with id" (:id account) ":" proposed-words)
-                              (result "no_matches"))
+              (= num-proposed num-matches) (let [code (generate-auth-token)]
+                                             (info "Successfull password word check for" username "with id" (:id account) ":" proposed-words)
+                                             (s/add-remember-code! db (:id account) code)
+                                             (result "ok" {:url (str "/change-password?code=" code)}))
+              (= 0 num-matches) (do
+                                  (info "Failed password word check with NO matching words for" username "with id" (:id account) ":" proposed-words)
+                                  (result "no_matches"))
+              (= (dec num-proposed) num-matches) (let [miss (first (set/difference proposed-words actual-words))]
+                                                   (info "Failed password check for" username "id" (:id account) "with one missing match:" miss)
+                                                   (cond
+                                                     ((ws/split-into-words [word1]) miss) (result "missed_word1")
+                                                     ((ws/split-into-words [word2]) miss) (result "missed_word2")
+                                                     ((ws/split-into-words [word3]) miss) (result "missed_word3")
+                                                     ((ws/split-into-words [word4]) miss) (result "missed_word4")))
               :else (do
-                      (info "Failed password word check with" matches "out of 4 matches for" username "with id" (:id account) ", wrong:" (set/difference proposed-words actual-words))
+                      (info "Failed password word check with" num-matches "out of 4 matches for" username "with id" (:id account) ", wrong:" (set/difference proposed-words actual-words))
                       (result "not_enough_matches")))))))))
 
 (defn change-password [{:keys [db params]}]

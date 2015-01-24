@@ -52,6 +52,10 @@ var MT = this.MT || {};
         case "duplicate_words": alert("We need four different words to make this work."); return true;
         case "too_common_words": alert("Some of the words you used are too common."); return true;
         case "not_enough_matches": alert("I'm sorry, but it doesn't look\nlike you've used all of these\nwords in your tomatoes."); return true;
+        case "missed_word1": return $("#word1").show_validation_error("almost there, but this one isn't right").focus();
+        case "missed_word2": return $("#word2").show_validation_error("almost there, but this one isn't right").focus();
+        case "missed_word3": return $("#word3").show_validation_error("almost there, but this one isn't right").focus();
+        case "missed_word4": return $("#word4").show_validation_error("almost there, but this one isn't right").focus();
         case "no_matches":
             alert("From what I can tell, you haven't used\nany of these words in your tomatoes.\n\nAre you sure this is the right username?");
             $("#username").show_validation_error("could you have used another name?").focus().select();
