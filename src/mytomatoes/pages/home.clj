@@ -131,8 +131,8 @@
             (when-not (:hide-tutorial prefs) (render-tutorial))
             "<div id=done>"
             (render-completed-tomatoes tomatoes prefs)
-            (when (< 5 (count tomatoes)) csv-link)
             "</div>"
+            (when (< 5 (count tomatoes)) csv-link)
             (render-audio))
        :script-bundles ["home.js"]})))
 
