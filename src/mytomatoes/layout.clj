@@ -37,13 +37,14 @@
                                  #"/sounds/.+\.(mp3|ogg|wav)"])))
 
 (def banner
-  {:id "we-are-back"
-   :contents (html [:p "mytomatoes is finally back! Thanks to all you wonderful
+  (comment ;; no banner
+    {:id "we-are-back"
+     :contents (html [:p "mytomatoes is finally back! Thanks to all you wonderful
                         people who stepped up when we asked for help funding the
                         server. Please, do not hesitate to report any strange
                         behavior to "
-                    [:a {:target "_blank" :href "http://twitter.com/mytomatoes"}
-                     "@mytomatoes"]])})
+                      [:a {:target "_blank" :href "http://twitter.com/mytomatoes"}
+                       "@mytomatoes"]])}))
 
 (defn hide-banner [request]
   (when-let [account-id (:account-id (:session request))]
