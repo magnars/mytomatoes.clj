@@ -13,11 +13,9 @@
   and start it running. Returns an updated instance of the system."
   [system]
   (migrate! (:db system))
-  (let [sessions (atom {})
-        handler (web/create-app (:db system) sessions (:env system))
+  (let [handler (web/create-app (:db system) (:memcached system) (:env system))
         server (server/create-and-start handler :port (:port system))]
     (assoc system
-           :sessions sessions
            :handler handler
            :server server)))
 
@@ -27,7 +25,7 @@
   [system]
   (when (:server system)
     (server/stop (:server system)))
-  (dissoc system :sessions :handler :server))
+  (dissoc system :handler :server))
 
 (defn create-system
   "Returns a new instance of the whole application."

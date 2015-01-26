@@ -15,6 +15,7 @@
             [ring.middleware.not-modified]
             [ring.middleware.params]
             [ring.middleware.session]
+            [ring.middleware.session.memcached :refer [mem-store]]
             [taoensso.timbre :refer [info error]]
             [ring.util.response :as res]
             [mytomatoes.csv :as csv]))
@@ -55,13 +56,12 @@
            (error e)
            (error/get-page req)))))
 
-(defn create-app [db sessions env]
+(defn create-app [db memcached env]
   (-> (app-routes)
       (wrap-remember-code)
       (include-stuff-in-request db env)
       (ring.middleware.params/wrap-params)
-      (ring.middleware.session/wrap-session
-       {:store (ring.middleware.session.memory/memory-store sessions)})
+      (ring.middleware.session/wrap-session {:store (mem-store memcached)})
       (wrap-exceptions)
       (optimus/wrap layout/get-assets
                     (if (= :prod env) optimizations/all optimizations/none)

@@ -22,7 +22,9 @@
                  [clojure-csv "2.0.1"]
                  [org.clojure/tools.nrepl "0.2.7"]
                  [com.postspectacular/rotor "0.1.0"]
-                 [cheshire "5.4.0"]]
+                 [cheshire "5.4.0"]
+                 [ring-session-memcached "0.0.1"]
+                 [org.slf4j/slf4j-nop "1.7.7"]]
   :main mytomatoes.system
   :profiles {:dev {:dependencies [[org.clojure/tools.trace "0.7.8"]
                                   [ciderale/quick-reset "0.1.1"]
