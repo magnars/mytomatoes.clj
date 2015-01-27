@@ -38,11 +38,15 @@
     (remove-remember-code! db remember-code)
     account-id))
 
+(def a-year (* 60 60 24 356))
+
 (defn remember! [response db account-id]
   (let [code (generate-auth-token)]
     (add-remember-code! db account-id code)
     (assoc-in response [:cookies "mytomatoes_remember"] {:value code
-                                                         :path "/"})))
+                                                         :path "/"
+                                                         :http-only true
+                                                         :max-age a-year})))
 
 (defn wrap-remember-code [handler]
   (fn [req]
