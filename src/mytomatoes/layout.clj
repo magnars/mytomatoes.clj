@@ -1,10 +1,10 @@
 (ns mytomatoes.layout
   (:require [clojure.java.io :as io]
-            [hiccup.page :as page]
-            [optimus.assets :as assets]
-            [optimus.hiccup]
             [hiccup.core :refer [html]]
-            [mytomatoes.storage :refer [get-preferences]]))
+            [hiccup.page :as page]
+            [mytomatoes.storage :refer [get-preferences]]
+            [optimus.assets :as assets]
+            [optimus.html]))
 
 (def bundles {"styles.css" ["/theme/css/reset.css"
                             "/theme/css/master.css"]
@@ -58,7 +58,7 @@
           [:head
            [:meta {:charset "utf-8"}]
            [:title "mytomatoes.com"]
-           (optimus.hiccup/link-to-css-bundles request ["styles.css"])]
+           (optimus.html/link-to-css-bundles request ["styles.css"])]
           [:body
            [:div {:id "main"}
             [:div {:id "header"}
@@ -102,6 +102,6 @@
             (if (= 500 (:status page))
               " &gt;&lt;"
               " :-)")]]
-          (optimus.hiccup/link-to-js-bundles request (into ["lib.js"] (:script-bundles page)))
+          (optimus.html/link-to-js-bundles request (into ["lib.js"] (:script-bundles page)))
           (when (= :prod (:env request))
             [:script (slurp (io/resource "public/ga.js"))]))})

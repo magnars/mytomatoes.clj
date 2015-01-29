@@ -10,11 +10,9 @@
             [mytomatoes.system]
             [mytomatoes.storage :as st]
             [print.foo :refer :all]
-            [quick-reset.core :refer [stop reset system]]
-            [taoensso.timbre :as timbre]))
+            [quick-reset.core :refer [stop reset system go]]
+            [taoensso.timbre :as log]))
 
-(timbre/refer-timbre)
 (quick-reset.core/set-constructor 'mytomatoes.system/create-system)
 
-(timbre/set-config! [:appenders :spit :enabled?] true)
-(timbre/set-config! [:shared-appender-config :spit-filename] "debug.log")
+(log/merge-config! {:appenders {:spit (log/spit-appender {:fname "debug.log"})}})

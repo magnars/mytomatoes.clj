@@ -1,20 +1,37 @@
 (ns mytomatoes.system
   (:gen-class :main true)
   (:require [clojure.java.io :as io]
+            [clojure.tools.nrepl.server :as nrepl]
+            [com.postspectacular.rotor :as rotor]
+            [mytomatoes.migrations :refer [migrate!]]
             [mytomatoes.server :as server]
             [mytomatoes.web :as web]
-            [mytomatoes.migrations :refer [migrate!]]
-            [clojure.tools.nrepl.server :as nrepl]
-            [taoensso.timbre :as timbre :refer [info]]
-            [com.postspectacular.rotor :as rotor]
-            [taoensso.timbre.appenders.postal :as postal-appender]))
+            [taoensso.timbre.appenders.3rd-party.rolling :as rolling-appender]
+            [taoensso.timbre.appenders.postal :as postal-appender]
+            [taoensso.timbre :as log]))
+
+(defn send-error-emails [{:keys [host port user pass from to]}]
+  (log/merge-config!
+   {:appenders {:postal
+                (postal-appender/postal-appender
+                 ^{:host host :port port :user user :pass pass}
+                 {:from from :to to})}})
+  (log/info "Sending errors to" to "via" host))
+
+(defn write-logs-to-file [conf]
+  (log/merge-config!
+   {:appenders {:rolling
+                (rolling-appender/rolling-appender conf)}})
+  (log/info "Writing logs to" (pr-str (:path conf)) (name (:pattern conf :daily))))
 
 (defn start
   "Performs side effects to initialize the system, acquire resources,
   and start it running. Returns an updated instance of the system."
   [system]
-  (migrate! (:db system))
-  (let [handler (web/create-app (:db system) (:memcached system) (:env system))
+  (migrate! {:connection (:db system)})
+  (let [handler (web/create-app {:connection (:db system)}
+                                (:memcached system)
+                                (:env system))
         server (server/create-and-start handler :port (:port system))]
     (assoc system
            :handler handler
@@ -40,27 +57,11 @@
     (start system)
 
     (when (:rotor-log-file system)
-      (timbre/set-config! [:appenders :rotor]
-                          {:min-level :info
-                           :enabled? true
-                           :async? false ; should be always false for rotor
-                           :max-message-per-msecs nil
-                           :fn rotor/append})
-      (timbre/set-config! [:shared-appender-config :rotor]
-                          {:path (:rotor-log-file system) :max-size (* 512 1024) :backlog 10})
-      (info "Rotor log file at" (:rotor-log-file system)))
+      (write-logs-to-file {:path (:rotor-log-file system)
+                           :pattern :weekly}))
 
-    (when-let [{:keys [host port user pass from to]} (:mail system)]
-      (timbre/set-config! [:appenders :postal]
-                          (postal-appender/make-postal-appender
-                           {:min-level :warn
-                            :enabled? true
-                            :rate-limit [1 60000] ; 1 msg / 60,000 msecs (1 min)
-                            :async? true} ; Don't block waiting for email to send
-                           {:postal-config
-                            ^{:host host :port port :user user :pass pass}
-                            {:from from :to to}}))
-      (info "Sending errors to" to "via" host))
+    (when (:mail system)
+      (send-error-emails (:mail system)))
 
     (let [repl (nrepl/start-server :port (:repl-port system 0) :bind "127.0.0.1")]
-      (info "Repl started at" (:port repl)))))
+      (log/info "Repl started at" (:port repl)))))

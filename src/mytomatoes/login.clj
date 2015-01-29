@@ -1,11 +1,9 @@
 (ns mytomatoes.login
   (:require [crypto.random]
+            [mytomatoes.storage :as s]
             [mytomatoes.util :refer [result]]
-            [mytomatoes.storage :refer [get-account-id-by-remember-code]]
-            [mytomatoes.storage :refer [remove-remember-code!]]
-            [mytomatoes.storage :refer [add-remember-code!]]
-            [taoensso.timbre :refer [info]]
-            [ring.util.response :refer [redirect]])
+            [ring.util.response :refer [redirect]]
+            [taoensso.timbre :refer [info]])
   (:import [org.apache.commons.codec.binary Hex]))
 
 (defn json-request? [req]
@@ -34,15 +32,16 @@
       (String.)))
 
 (defn log-in-with-remember-code [db remember-code]
-  (when-let [account-id (get-account-id-by-remember-code db remember-code)]
-    (remove-remember-code! db remember-code)
+  (when-let [account-id (s/get-account-id-by-remember-code db remember-code)]
+    (s/remove-remember-code! {:code remember-code} db)
     account-id))
 
 (def a-year (* 60 60 24 356))
 
 (defn remember! [response db account-id]
   (let [code (generate-auth-token)]
-    (add-remember-code! db account-id code)
+    (s/add-remember-code! {:account_id account-id
+                           :code code} db)
     (assoc-in response [:cookies "mytomatoes_remember"] {:value code
                                                          :path "/"
                                                          :http-only true

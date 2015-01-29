@@ -68,7 +68,9 @@
   (let [name (get params "name")
         value (get params "value" "y")
         account-id (:account-id session)]
-    (s/set-preference! db account-id name value)
+    (s/set-preference! {:account_id account-id
+                        :name name
+                        :value value} db)
     (info "Set preference" name "=" value "for" account-id)
     (result "ok")))
 
@@ -77,7 +79,11 @@
         start-time (get params "start_time")
         end-time (get params "end_time")
         description (get params "description")]
-    (s/insert-complete-tomato! db account-id description start-time end-time)
+    (s/insert-complete-tomato! {:account_id account-id
+                                :description description
+                                :local_end end-time
+                                :local_start start-time}
+                               db)
     (info "Complete tomato for" account-id ":" description)
     (result "ok")))
 
@@ -111,7 +117,9 @@
             (cond
               (= num-proposed num-matches) (let [code (generate-auth-token)]
                                              (info "Successfull password word check for" username "with id" (:id account) ":" proposed-words)
-                                             (s/add-remember-code! db (:id account) code)
+                                             (s/add-remember-code! {:account_id (:id account)
+                                                                    :code code}
+                                                                   db)
                                              (result "ok" {:url (str "/change-password?code=" code)}))
               (= 0 num-matches) (do
                                   (info "Failed password word check with NO matching words for" username "with id" (:id account) ":" proposed-words)
@@ -140,7 +148,7 @@
       (if-let [account-id (s/get-account-id-by-remember-code db code)]
         (do
           (s/change-password! db account-id password)
-          (s/remove-remember-code! db code)
+          (s/remove-remember-code! {:code code} db)
           (info "Password changed for account" account-id)
           (-> (result "ok")
               (assoc :session {:account-id account-id})

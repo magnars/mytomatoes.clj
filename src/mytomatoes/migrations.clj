@@ -8,16 +8,16 @@
 (defmacro migration [db version num f]
   `(when (> ~num ~version)
      (info ~(str "Running migration " num ": " f))
-     (~f ~db)))
+     (~f {} ~db)))
 
-(defn- delete-tomatoes-with-invalid-dates! [db]
-  (delete-tomatoes-with-invalid-start-dates! db "0000-00-00 00:00:00")
-  (delete-tomatoes-with-invalid-end-dates! db "0000-00-00 00:00:00"))
+(defn- delete-tomatoes-with-invalid-dates! [_ db]
+  (delete-tomatoes-with-invalid-start-dates! {:date "0000-00-00 00:00:00"} db)
+  (delete-tomatoes-with-invalid-end-dates! {:date "0000-00-00 00:00:00"} db))
 
 (def latest 10)
 
 (defn migrate! [db]
-  (let [version (-> db get-version first :version)]
+  (let [version (-> (get-version {} db) first :version)]
 
     (migration db version 6 drop-event-log!)
     (migration db version 7 add-account-id-index-to-tomatoes!)
@@ -27,4 +27,4 @@
 
     (when (> latest version)
       (info "Updated system to newest version:" latest)
-      (update-version! db latest))))
+      (update-version! {:version latest} db))))
