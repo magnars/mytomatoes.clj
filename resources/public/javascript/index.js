@@ -291,9 +291,6 @@
         $("#break_left").countdown(five_minutes(), change_to_state.break_over);
         $("#donate").fadeIn(3000);
         if (window._gaq) { window._gaq.push(['_trackEvent', 'Donations', 'Displayed', "never", null, true]);}
-        $("#donate a").click(function () {
-            if (window._gaq) { window._gaq.push(['_trackEvent', 'Donations', 'Clicked', "never", null, true]);}
-        });
         MT.make_sure_that_today_is_still_today();
         enter_pressed_event = false;
         return false;
@@ -333,6 +330,16 @@
         if (!sound_player.supports_ticking) {
             disable_ticking_preference();
         }
+
+        $("#click-donate").click(function () {
+            if (window._gaq) { window._gaq.push(['_trackEvent', 'Donations', 'Clicked', "never", null, true]);}
+        });
+        $("#close-donate").click(function () {
+            $.postJSON("/actions/set_preference", {name: "hide_donation"});
+            $("#donate").remove();
+            if (window._gaq) { window._gaq.push(['_trackEvent', 'Donations', 'Closed', "never", null, true]);}
+            return false;
+        });
 
         $("#hide_banner").click(function () {
             $.postJSON("/actions/set_preference", {name: "hide_banner_" + $(this).attr("data-id")});

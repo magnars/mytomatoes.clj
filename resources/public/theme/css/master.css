@@ -129,3 +129,4 @@ em {font-style: italic;}
 #tutorial #break_over_tutorial span {background-position:-500px 0;}
 
 #donate { display: none; padding: 20px; text-align: center; background: #ffc; border-bottom: 2px solid #ccc;}
+#close-donate {float: right; margin-left: 10px;}
