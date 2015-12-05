@@ -289,6 +289,7 @@
         $("#states").css("background-color", "#ffd");
         $("#longer_break").addClass("longer_break_closed").removeClass("longer_break_open").show();
         $("#break_left").countdown(five_minutes(), change_to_state.break_over);
+        $("#donate").fadeIn(3000);
         MT.make_sure_that_today_is_still_today();
         enter_pressed_event = false;
         return false;
@@ -301,6 +302,7 @@
             sound_player.stop_alarm();
             change_to_state.waiting();
         });
+        $("#donate").remove();
         MT.make_sure_that_today_is_still_today();
         enter_pressed_event = click_body;
     };

@@ -128,6 +128,9 @@
       {:body
        (str (render-states)
             (render-preferences prefs)
+            (when (< 10 (count tomatoes))
+              (html [:div {:id "donate"} "No advertising. Never! But servers cost money. "
+                     [:a {:href "https://www.gofundme.com/jadh879w"} "Help me out"] ", if you can."]))
             (when-not (:hide-tutorial prefs) (render-tutorial))
             "<div id=done>"
             (render-completed-tomatoes tomatoes prefs)

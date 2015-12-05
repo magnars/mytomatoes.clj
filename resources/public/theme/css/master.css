@@ -127,3 +127,5 @@ em {font-style: italic;}
 #tutorial #enter_description_tutorial span {background-position:-300px 0;}
 #tutorial #on_a_break_tutorial span {background-position:-400px 0;}
 #tutorial #break_over_tutorial span {background-position:-500px 0;}
+
+#donate { display: none; padding: 20px; text-align: center; background: #ffc; border-bottom: 2px solid #ccc;}
