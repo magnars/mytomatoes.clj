@@ -290,6 +290,10 @@
         $("#longer_break").addClass("longer_break_closed").removeClass("longer_break_open").show();
         $("#break_left").countdown(five_minutes(), change_to_state.break_over);
         $("#donate").fadeIn(3000);
+        if (window._gaq) { window._gaq.push(['_trackEvent', 'Donations', 'Displayed', "never", null, true]);}
+        $("#donate a").click(function () {
+            if (window._gaq) { window._gaq.push(['_trackEvent', 'Donations', 'Clicked', "never", null, true]);}
+        });
         MT.make_sure_that_today_is_still_today();
         enter_pressed_event = false;
         return false;
