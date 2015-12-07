@@ -290,7 +290,7 @@
         $("#longer_break").addClass("longer_break_closed").removeClass("longer_break_open").show();
         $("#break_left").countdown(five_minutes(), change_to_state.break_over);
         $("#donate").fadeIn(3000);
-        if (window._gaq) { window._gaq.push(['_trackEvent', 'Donations', 'Displayed', "never", null, true]);}
+        if (window._gaq) { window._gaq.push(['_trackEvent', 'Donations', 'Displayed', "helping", null, true]);}
         MT.make_sure_that_today_is_still_today();
         enter_pressed_event = false;
         return false;
@@ -332,12 +332,12 @@
         }
 
         $("#click-donate").click(function () {
-            if (window._gaq) { window._gaq.push(['_trackEvent', 'Donations', 'Clicked', "never", null, true]);}
+            if (window._gaq) { window._gaq.push(['_trackEvent', 'Donations', 'Clicked', "helping", null, true]);}
         });
         $("#close-donate").click(function () {
             $.postJSON("/actions/set_preference", {name: "hide_donation"});
             $("#donate").remove();
-            if (window._gaq) { window._gaq.push(['_trackEvent', 'Donations', 'Closed', "never", null, true]);}
+            if (window._gaq) { window._gaq.push(['_trackEvent', 'Donations', 'Closed', "helping", null, true]);}
             return false;
         });
 

@@ -132,10 +132,10 @@
                        (< 10 (count tomatoes)))
               (html [:div {:id "donate"}
                      [:a {:href "#" :id "close-donate"} "hide"]
-                     "No advertising. Never! But servers cost money. "
+                     "Is mytomatoes helping you? I'm raising money to keep it running. "
                      [:a {:href "https://www.gofundme.com/jadh879w"
                           :id "click-donate"
-                          :target "_blank"} "Help me out"] ", if you can. "]))
+                          :target "_blank"} "Want to help out?"]]))
             (when-not (:hide-tutorial prefs) (render-tutorial))
             "<div id=done>"
             (render-completed-tomatoes tomatoes prefs)
