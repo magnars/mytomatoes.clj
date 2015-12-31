@@ -37,11 +37,12 @@
                                  #"/sounds/.+\.(mp3|ogg|wav)"])))
 
 (def banner
-  {:id "donations-2015"
-   :contents (html [:p "One more year of mytomatoes has been secured by "
-                    [:a {:target "_blank" :href "https://www.gofundme.com/jadh879w"}
-                     "45 wonderful donors"]
-                    " - thank you so much!"])})
+  (comment ;; no banner
+    {:id "donations-2015"
+     :contents (html [:p "One more year of mytomatoes has been secured by "
+                      [:a {:target "_blank" :href "https://www.gofundme.com/jadh879w"}
+                       "45 wonderful donors"]
+                      " - thank you so much!"])}))
 
 (defn hide-banner [request]
   (when-let [account-id (:account-id (:session request))]
