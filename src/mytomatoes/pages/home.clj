@@ -28,9 +28,9 @@
      [:div {:id "longer_break" :class "longer_break_closed"}
       [:a {:id "toggle_longer_break" :href "#"} "take a longer break"]
       [:span ": "
-       [:a {:href "#"} "10"]
-       [:a {:href "#"} "15"]
-       [:a {:href "#"} "20"]
+       [:a {:href "#"} "10"] " "
+       [:a {:href "#"} "15"] " "
+       [:a {:href "#"} "20"] " "
        [:a {:href "#"} "25"] " min"]]]
     [:li {:id "break_over"}
      [:div {:id "no_break_left"} "0:00"]
