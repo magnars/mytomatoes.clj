@@ -1,5 +1,6 @@
 (ns mytomatoes.login
-  (:require [crypto.random]
+  (:require [clj-time.core :as time]
+            [crypto.random]
             [mytomatoes.storage :as s]
             [mytomatoes.util :refer [result]]
             [ring.util.response :refer [redirect]]
@@ -42,10 +43,11 @@
   (let [code (generate-auth-token)]
     (s/add-remember-code! {:account_id account-id
                            :code code} db)
-    (assoc-in response [:cookies "mytomatoes_remember"] {:value code
-                                                         :path "/"
-                                                         :http-only true
-                                                         :max-age a-year})))
+    (assoc-in response [:cookies "mytomatoes_remember"]
+              {:value code
+               :path "/"
+               :http-only true
+               :expires (time/plus (time/now) (time/years 1))})))
 
 (defn wrap-remember-code [handler]
   (fn [req]
