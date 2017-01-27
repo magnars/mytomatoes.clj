@@ -17,8 +17,15 @@
 (def latest 10)
 
 (defn migrate! [db]
+  (when (empty? (check-for-schema-info {} db))
+    (create-table-schema-info! {} db)
+    (set-initial-schema-version! {} db))
   (let [version (-> (get-version {} db) first :version)]
-
+    (migration db version 1 create-table-accounts!)
+    (migration db version 2 create-table-event-log!)
+    (migration db version 3 create-table-remember-codes!)
+    (migration db version 4 create-table-tomatoes!)
+    (migration db version 5 create-table-preferences!)
     (migration db version 6 drop-event-log!)
     (migration db version 7 add-account-id-index-to-tomatoes!)
     (migration db version 8 add-username-index-to-accounts!)

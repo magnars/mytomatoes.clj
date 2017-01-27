@@ -1,7 +1,6 @@
 {:db {:subprotocol "mysql"
-      :subname "//dockerhost:3306/mytomatoes?characterEncoding=utf8"
-      :user "root"
-      :password "mysecretpassword"}
+      :subname "//localhost:3306/mytomatoes?characterEncoding=utf8"
+      :user "root"}
  :memcached "localhost:11211"
  :port 3001
  :env :dev}

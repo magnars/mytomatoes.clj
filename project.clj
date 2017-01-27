@@ -2,7 +2,6 @@
   :description "The mytomatoes.com site, retro style"
   :url "http://mytomatoes.com"
   :jvm-opts ["-Xmx1G"
-             "-XX:MaxPermSize=256m"
              "-Djava.awt.headless=true"
              "-Dfile.encoding=UTF-8"]
   :dependencies [[org.clojure/clojure "1.7.0"]
