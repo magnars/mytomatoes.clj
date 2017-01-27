@@ -36,7 +36,7 @@
      [:div {:id "no_break_left"} "0:00"]
      [:div {:id "back_to_work"} "back to work!"]]]))
 
-(defn- render-preferences [{:keys [play-ticking use-american-clock]}]
+(defn- render-preferences [{:keys [play-ticking use-american-clock show-notifications]}]
   (html
    [:div {:id "preferences_container"}
     [:div {:id "preferences"}
@@ -51,7 +51,11 @@
       [:li {:id "clock_preference"}
        [:label
         [:input {:type "checkbox" :name "use_american_clock" :checked use-american-clock}]
-        " Use 12-hour clock"]]]]]))
+        " Use 12-hour clock"]]
+      [:li {:id "notify_preference"}
+       [:label
+        [:input {:type "checkbox" :name "show_notifications" :checked show-notifications}
+         " Show browser notifications"]]]]]]))
 
 (defn- render-tutorial []
   (html

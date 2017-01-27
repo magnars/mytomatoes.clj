@@ -90,7 +90,7 @@ em {font-style: italic;}
 #preferences_container {width:550px;margin:-2px auto 2px;position: relative;}
 #preferences {width: 550px; position: absolute; top: -28px; height: 28px; overflow: hidden; opacity: 0.2; background: #f4f4f4; -moz-border-radius: 23px 23px 0 0; -webkit-border-radius: 23px 23px 0 0;}
 #preferences:hover {opacity: 1;}
-#preferences.open {opacity: 1; top: -170px; height: 170px; background: #eee; border-bottom: 0;}
+#preferences.open {opacity: 1; top: -220px; height: 220px; background: #eee; border-bottom: 0;}
 #preferences h3 {color: #669; margin: 0; position: relative; text-align: center; height: 23px; padding-top: 5px; font-size: 15px; background: url(../images/preferences.png) no-repeat 39% 60%; cursor: pointer;}
 #preferences.open h3 {color: #000; background-color: #ddd; -moz-border-radius: 23px 23px 0 0; -webkit-border-radius: 23px 23px 0 0;}
 #preferences li {border-bottom: 1px dashed #ddd; padding: 20px 50px;}

@@ -1,4 +1,4 @@
-/*global jQuery, MT, shortcut, location, setTimeout, confirm, document, window */
+/*global jQuery, MT, shortcut, location, setTimeout, confirm, document, window, Notification */
 (function ($) {
     var sound_player, enter_pressed_event, current_tomato, change_to_state = {}, current_state, current_tutorial_step;
 
@@ -135,11 +135,24 @@
         }
     }
 
+    function toggle_notification_pref() {
+        if (this.checked) {
+            Notification.requestPermission();
+        }
+    }
+
     function disable_ticking_preference() {
         $("#ticking_preference input:checkbox").
             attr("disabled", true).
             closest("li").addClass("disabled").
-            find(".note").html("<span>I'm terribly sorry, but ticking is not supported in this browser. <a href='http://www.google.com/chrome'>Try Chrome</a></span>");
+            find(".note").html("<span>Sorry, but ticking is not supported by this browser. <a href='http://www.google.com/chrome'>Try Chrome</a></span>");
+    }
+
+    function disable_notification_preference() {
+        $("#notify_preference input:checkbox").
+            attr("disabled", true).
+            closest("li").addClass("disabled").
+            find(".note").html("<span>Sorry, but notifications are not supported by this browser. <a href='http://www.google.com/chrome'>Try Chrome</a></span>");
     }
 
     function update_todays_tomato_counter() {
@@ -245,6 +258,12 @@
         }
     }
 
+    function should_show_notification() {
+        return window.Notification &&
+            $("#notify_preference input:checkbox").is(":checked") &&
+            Notification.permission === "granted";
+    }
+
     /* states */
 
     change_to_state.working = function () {
@@ -268,6 +287,9 @@
         }
         sound_player.play_alarm();
         document.title = "break! - mytomatoes.com";
+        if (should_show_notification()) {
+            new Notification("Time for a break!");
+        }
         flash_until_click("#ffcb6e", function () {
             sound_player.stop_alarm();
             current_tomato.end_time = now();
@@ -299,6 +321,9 @@
     change_to_state.break_over = function () {
         change_state_to("#break_over");
         sound_player.play_alarm();
+        if (should_show_notification()) {
+            new Notification("Back to work!");
+        }
         flash_until_click("#fff", function () {
             sound_player.stop_alarm();
             change_to_state.waiting();
@@ -324,11 +349,19 @@
         $("#longer_break span a").click(change_to_this_break_length);
         $("#ticking_preference input:checkbox").click(maybe_toggle_ticking);
         $("#clock_preference input:checkbox").click(toggle_clock_types);
+        $("#notify_preference input:checkbox").click(toggle_notification_pref);
         change_to_state.waiting();
         window.onbeforeunload = maybe_confirm_leaving_page;
         sound_player = MT.sound_player.create();
         if (!sound_player.supports_ticking) {
             disable_ticking_preference();
+        }
+        if (("Notification" in window)) {
+            if ($("#notify_preference input:checkbox").is(":checked")) {
+                Notification.requestPermission();
+            }
+        } else {
+            disable_notification_preference();
         }
 
         $("#click-donate").click(function () {
