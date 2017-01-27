@@ -37,12 +37,13 @@
                                  #"/sounds/.+\.(mp3|ogg|wav)"])))
 
 (def banner
-  (comment ;; no banner
-    {:id "donations-2015"
-     :contents (html [:p "One more year of mytomatoes has been secured by "
-                      [:a {:target "_blank" :href "https://www.gofundme.com/jadh879w"}
-                       "45 wonderful donors"]
-                      " - thank you so much!"])}))
+  #_{:id "donations-2015"
+   :contents (html [:p "One more year of mytomatoes has been secured by "
+                    [:a {:target "_blank" :href "https://www.gofundme.com/jadh879w"}
+                     "45 wonderful donors"]
+                    " - thank you so much!"])}
+  {:id "browser-notifications"
+   :contents (html [:p "mytomatoes now supports browser notifications for alerts without sound - you can enable them under preferences"])})
 
 (defn hide-banner [request]
   (when-let [account-id (:account-id (:session request))]
