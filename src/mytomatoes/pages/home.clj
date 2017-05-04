@@ -132,7 +132,7 @@
       {:body
        (str (render-states)
             (render-preferences prefs)
-            (when (and (not (:hide-donation-2017 prefs))
+            #_(when (and (not (:hide-donation-2017 prefs))
                        (< 10 (count tomatoes)))
               (html [:div {:id "donate"}
                      [:a {:href "#" :id "close-donate"} "hide"]
