@@ -368,7 +368,7 @@
             if (window._gaq) { window._gaq.push(['_trackEvent', 'Donations', 'Clicked', "helping", null, true]);}
         });
         $("#close-donate").click(function () {
-            $.postJSON("/actions/set_preference", {name: "hide_donation"});
+            $.postJSON("/actions/set_preference", {name: "hide_donation_2017"});
             $("#donate").remove();
             if (window._gaq) { window._gaq.push(['_trackEvent', 'Donations', 'Closed', "helping", null, true]);}
             return false;
