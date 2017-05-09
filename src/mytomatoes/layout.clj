@@ -37,16 +37,17 @@
                                  #"/sounds/.+\.(mp3|ogg|wav)"])))
 
 (def banner
-  #_{:id "donations-2015"
-     :contents (html [:p "One more year of mytomatoes has been secured by "
-                      [:a {:target "_blank" :href "https://www.gofundme.com/jadh879w"}
-                       "45 wonderful donors"]
-                      " - thank you so much!"])}
-  {:id "donation-drive-2017"
-   :contents (html [:p "Is mytomatoes helping you? I'm raising money to keep it running. "
-                    [:a {:href "https://www.gofundme.com/keep-mytomatoescom-up-and-running"
-                         :id "click-donate"
-                         :target "_blank"} "Want to help out?"]])})
+  #_{:id "donation-drive-2017"
+     :contents (html [:p "Is mytomatoes helping you? I'm raising money to keep it running. "
+                      [:a {:href "https://www.gofundme.com/keep-mytomatoescom-up-and-running"
+                           :id "click-donate"
+                           :target "_blank"} "Want to help out?"]])}
+  {:id "donations-done-2017"
+   :contents (html [:p "One more year of mytomatoes has been secured by "
+                    [:a {:target "_blank" :href "https://www.gofundme.com/keep-mytomatoescom-up-and-running"}
+                     "49 wonderful donors"]
+                    " - thank you so much!"])}
+  )
 
 (defn hide-banner [request]
   (when-let [account-id (:account-id (:session request))]
