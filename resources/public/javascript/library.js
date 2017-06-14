@@ -33,7 +33,7 @@ var MT = MT || {};
     }
 
     MT.fix_day_names = function () {
-        $("#done h3").each(fix_day_name);
+        $(".done h3").each(fix_day_name);
     };
 
     MT.reload_done_div = function () {

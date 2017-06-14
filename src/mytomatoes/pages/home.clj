@@ -1,9 +1,11 @@
 (ns mytomatoes.pages.home
-  (:require [clj-time.format :refer [formatter unparse]]
+  (:require [clj-time.core :as time]
+            [clj-time.format :refer [formatter unparse]]
             [hiccup.core :refer [html]]
             [inflections.core :refer [plural]]
             [mytomatoes.layout :refer [with-layout]]
-            [mytomatoes.storage :refer [get-tomatoes get-preferences]]))
+            [mytomatoes.storage :refer [get-tomatoes get-preferences]])
+  (:import org.joda.time.DateTime))
 
 (defn- render-states []
   (html
@@ -125,31 +127,64 @@
      [:source {:src "sounds/ticking.mp3" :type "audio/mpeg;codecs=mp3"}]
      [:source {:src "sounds/ticking.wav" :type "audio/x-wav;codecs=1"}]]]))
 
+(defn render-donation-banner [prefs tomatoes]
+  (when (and (not (:hide-donation-2017 prefs))
+             (not (:hide-banner-donation-drive-2017 prefs))
+             (< 10 (count tomatoes)))
+    (html [:div {:id "donate"}
+           [:a {:href "#" :id "close-donate"} "hide"]
+           "Is mytomatoes helping you? "
+           [:a {:href "https://www.gofundme.com/keep-mytomatoescom-up-and-running"
+                :id "click-donate"
+                :target "_blank"} "Help keep the server running"]])))
+
+(defn get-year [tomato]
+  (.getYear ^DateTime (:local-start tomato)))
+
+(defn render-year [[year count]]
+  (html [:div {:class "year-holder"}
+         [:h3 [:span {:class "show-year" :data-year year} year]
+          " " [:span {:class "year-count"} count " finished tomatoes"]]]))
+
+(defn render-years [tomatoes]
+  (when (seq tomatoes)
+    (str "<div id=\"years\">"
+         (->> tomatoes
+              (map get-year)
+              frequencies
+              (sort-by (comp - first))
+              (map render-year)
+              (apply str))
+         "</div>")))
+
 (defn get-page [{:keys [db session] :as request}]
   (let [tomatoes (get-tomatoes db (:account-id session))
-        prefs (get-preferences db (:account-id session))]
+        prefs (get-preferences db (:account-id session))
+        this-year (.getYear ^DateTime (time/now))
+        this-year? #(= this-year (get-year %))]
     (with-layout request
       {:body
        (str (render-states)
             (render-preferences prefs)
-            #_(when (and (not (:hide-donation-2017 prefs))
-                         (not (:hide-banner-donation-drive-2017 prefs))
-                         (< 10 (count tomatoes)))
-                (html [:div {:id "donate"}
-                       [:a {:href "#" :id "close-donate"} "hide"]
-                       "Is mytomatoes helping you? "
-                       [:a {:href "https://www.gofundme.com/keep-mytomatoescom-up-and-running"
-                            :id "click-donate"
-                            :target "_blank"} "Help keep the server running"]]))
+            #_(render-donation-banner prefs tomatoes)
             (when-not (:hide-tutorial prefs) (render-tutorial))
-            "<div id=done>"
-            (render-completed-tomatoes tomatoes prefs)
+            "<div id=\"done\" class=\"done\">"
+            (render-completed-tomatoes (filter this-year? tomatoes) prefs)
             "</div>"
+            (render-years (remove this-year? tomatoes))
             (when (< 5 (count tomatoes)) csv-link)
             (render-audio))
        :script-bundles ["home.js"]})))
 
 (defn completed-tomatoes-fragment [{:keys [db session]}]
   (let [tomatoes (get-tomatoes db (:account-id session))
-        prefs (get-preferences db (:account-id session))]
-    (render-completed-tomatoes tomatoes prefs)))
+        prefs (get-preferences db (:account-id session))
+        this-year (.getYear ^DateTime (time/now))
+        this-year? #(= this-year (get-year %))]
+    (render-completed-tomatoes (filter this-year? tomatoes) prefs)))
+
+(defn yearly-tomatoes [{:keys [db session]} year]
+  (let [tomatoes (get-tomatoes db (:account-id session))
+        prefs (get-preferences db (:account-id session))
+        same-year? #(= year (get-year %))]
+    (render-completed-tomatoes (filter same-year? tomatoes) prefs)))

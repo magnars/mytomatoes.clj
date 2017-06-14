@@ -1,11 +1,12 @@
 (ns mytomatoes.web
   (:require [compojure.core :refer [routes GET POST wrap-routes]]
             [mytomatoes.actions :as actions]
+            [mytomatoes.csv :as csv]
             [mytomatoes.layout :as layout]
             [mytomatoes.login :refer [redirect-if-not-logged-in wrap-remember-code redirect-if-logged-in]]
+            [mytomatoes.pages.error :as error]
             [mytomatoes.pages.home :as home]
             [mytomatoes.pages.login :as login]
-            [mytomatoes.pages.error :as error]
             [mytomatoes.pages.recovery :as recovery]
             [optimus.optimizations :as optimizations]
             [optimus.prime :as optimus]
@@ -16,9 +17,8 @@
             [ring.middleware.params]
             [ring.middleware.session]
             [ring.middleware.session.memcached :refer [mem-store]]
-            [taoensso.timbre :refer [info error]]
             [ring.util.response :as res]
-            [mytomatoes.csv :as csv]))
+            [taoensso.timbre :refer [info error]]))
 
 (defn app-routes []
   (routes
@@ -42,6 +42,7 @@
      (POST "/actions/keep_session_alive" [] (actions/keep-session-alive))
      (POST "/actions/complete_tomato" request (actions/complete-tomato request))
      (GET "/views/completed_tomatoes" request (home/completed-tomatoes-fragment request))
+     (GET "/views/yearly_tomatoes/:year" [year :as request] (home/yearly-tomatoes request (Integer/parseInt year)))
      (GET "/tomatoes.csv" request (csv/render-tomatoes request)))
     redirect-if-not-logged-in)))
 

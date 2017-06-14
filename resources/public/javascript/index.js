@@ -364,6 +364,17 @@
             disable_notification_preference();
         }
 
+        $("#years .show-year").live("click", function () {
+            $(this).
+                removeClass("show-year").
+                closest("h3").
+                addClass("showing-year").
+                closest(".year-holder").
+                append("<div class='done'></div>").
+                find(".done").
+                load("views/yearly_tomatoes/" + this.getAttribute("data-year"), MT.fix_day_names);
+        });
+
         $("#click-donate").click(function () {
             if (window._gaq) { window._gaq.push(['_trackEvent', 'Donations', 'Clicked', "helping", null, true]);}
         });

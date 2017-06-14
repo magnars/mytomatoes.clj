@@ -16,3 +16,14 @@
 (quick-reset.core/set-constructor 'mytomatoes.system/create-system)
 
 (log/merge-config! {:appenders {:spit (log/spit-appender {:fname "debug.log"})}})
+
+(comment
+  (def db {:connection (:db system)})
+
+  (st/get-account db "magnars")
+
+  (.getYear (:local-start (first (st/get-tomatoes db 1))))
+
+
+
+  )
