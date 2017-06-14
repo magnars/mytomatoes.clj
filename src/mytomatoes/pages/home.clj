@@ -132,15 +132,15 @@
       {:body
        (str (render-states)
             (render-preferences prefs)
-            (when (and (not (:hide-donation-2017 prefs))
-                       (not (:hide-banner-donation-drive-2017 prefs))
-                       (< 10 (count tomatoes)))
-              (html [:div {:id "donate"}
-                     [:a {:href "#" :id "close-donate"} "hide"]
-                     "Is mytomatoes helping you? "
-                     [:a {:href "https://www.gofundme.com/keep-mytomatoescom-up-and-running"
-                          :id "click-donate"
-                          :target "_blank"} "Help keep the server running"]]))
+            #_(when (and (not (:hide-donation-2017 prefs))
+                         (not (:hide-banner-donation-drive-2017 prefs))
+                         (< 10 (count tomatoes)))
+                (html [:div {:id "donate"}
+                       [:a {:href "#" :id "close-donate"} "hide"]
+                       "Is mytomatoes helping you? "
+                       [:a {:href "https://www.gofundme.com/keep-mytomatoescom-up-and-running"
+                            :id "click-donate"
+                            :target "_blank"} "Help keep the server running"]]))
             (when-not (:hide-tutorial prefs) (render-tutorial))
             "<div id=done>"
             (render-completed-tomatoes tomatoes prefs)

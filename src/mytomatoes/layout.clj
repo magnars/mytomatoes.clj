@@ -42,12 +42,12 @@
                       [:a {:href "https://www.gofundme.com/keep-mytomatoescom-up-and-running"
                            :id "click-donate"
                            :target "_blank"} "Want to help out?"]])}
-  {:id "donations-done-2017"
+  #_{:id "donations-done-2017"
    :contents (html [:p "One more year of mytomatoes has been secured by "
                     [:a {:target "_blank" :href "https://www.gofundme.com/keep-mytomatoescom-up-and-running"}
                      "49 wonderful donors"]
                     " - thank you so much!"])}
-  )
+  nil)
 
 (defn hide-banner [request]
   (when-let [account-id (:account-id (:session request))]
