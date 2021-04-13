@@ -9,3 +9,9 @@ mytomatoes.com helps you with the pomodoro technique by Francesco Cirillo - it's
 
 Then start the app with `lein run`
 
+## License
+
+Copyright © 2015-2021 Magnar Sveen
+
+Distributed under the Eclipse Public License either version 1.0 or (at your
+option) any later version.

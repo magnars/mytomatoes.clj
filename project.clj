@@ -1,6 +1,8 @@
 (defproject mytomatoes "0.1.0-SNAPSHOT"
   :description "The mytomatoes.com site, retro style"
   :url "http://mytomatoes.com"
+  :license {:name "Eclipse Public License"
+            :url "http://www.eclipse.org/legal/epl-v10.html"}
   :jvm-opts ["-Xmx1G"
              "-Djava.awt.headless=true"
              "-Dfile.encoding=UTF-8"]
